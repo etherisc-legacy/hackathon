@@ -1,2 +1,2 @@
 # hackathon
-issue tracker for ether.camp hackathon
+code repository and issue tracker for team etherisc at hack.ether.camp hackathon
