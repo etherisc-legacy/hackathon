@@ -1,7 +1,8 @@
 ## Etherisc Insurance Simulator
+A Python based simulation of the Etherisc basic insurance risk model.
 
-Synopsis: A Python based simulation of the Etherisc basic insurance risk model.
-Author: @jbrukh
+Author: @jbrukh  
+Email: jake@coinfund.io
 
 ### Installation
 
