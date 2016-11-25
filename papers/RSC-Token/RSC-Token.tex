@@ -1,0 +1,228 @@
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a template for your own input - copy it
+% to a new file with a new name and use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{upgreek}
+\bibliographystyle{apalike-fr}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\setcounter{tocdepth}{2}
+\usepackage{graphicx}
+
+\usepackage[english]{babel} % Pour adopter les règles de typographie française
+\usepackage[T1]{fontenc} % Pour que les lettres accentuées soient reconnues
+
+\usepackage{url}
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+\newcommand{\ETH}{$\Upxi$}
+\begin{document}
+
+\mainmatter 
+
+\title{RSC - Etherisc Token}
+
+\titlerunning{RSC : Etherisc Token}
+
+\author{etherisc hackathon team: Jake Brukhman, Stephan Karpischek, Christoph Mussenbrock}
+
+\institute{etherisc GmbH}
+
+\authorrunning{etherisc hackathon team}
+
+\toctitle{Abstract}
+\tocauthor{{}}
+
+\maketitle
+
+\begin{abstract}
+The rationale behind this document is to collect the ideas and introduce a consistent wording throughout the next weeks.
+\end{abstract}
+
+\medskip
+
+\begingroup
+\let\clearpage\relax
+\tableofcontents
+\addcontentsline{toc}{section}{Introduction}
+\endgroup
+
+\medskip
+\medskip
+
+\section*{Introduction}
+
+We try to formulate an economical context for an ethereum ERC-20-token which serves as a base for a 
+P2P-Insurance. 
+
+The Model should be self-stabilizing - it should run forever without (to much) 
+human interference and governance. Instead, we like to employ Market mechanisms for
+central governance topics like token issuing, pricing and so on.
+
+\section{Objectives}
+Before we start with describing a solution, we should write down what we want to achieve.
+The following objectives should be met and any proposed solution should be matched against these.
+\begin{enumerate}
+    \item \textbf{Simple:} The structure of the system should be simple and auditable.\\
+    \textit{Rationale:} Blockchain is still in the early days, we should start with something simple and
+    intelligible. People have difficulties understanding blockchain at all, we don't want to burden them 
+    with a complicated system. Acceptance and market penetration will be higher with a simple system.
+    \item \textbf{Self-regulating, self-enforcing:} The contract should 
+    react automatically on events and regulate accordingly.\\
+    \textit{Rationale:} Adhering to blockchain principles and decentralization.
+    \item \textbf{Secure:} There should be reasonable protection of customers and investors.\\
+    \textit{Rationale:} Without investors, no insurance. Therefore the interests of customers and investors
+    have to be protected.
+    \item \textbf{Sustainable:} The contract should be able to overcome bad market conditions. \\
+    \textit{Rationale:} If the contract fails for any reason, this will have negative impact on the ecosystem, 
+    which should be avoided.
+    \item \textbf{Extensible:} The contract should be able to growth organically according to market demands.\\
+    \textit{Rationale:} If the concept is successful, hard limits will hurt.
+\end{enumerate}
+
+
+\section{Glossary}
+
+We make the following assumptions for simplicity:
+
+\begin{enumerate}
+    \item We have uniform policies with a probability of default ($PD$) of 1\%.
+    \item The insured value per policy ($IV$) is 100 ETH (that’s what you get in case of a damage).
+    \item The policies are uncorrelated. 
+    \item Damages $D$ are always total, there is no partial payout. 
+    \item The expected loss ($EL$) is therefore 1\%; that’s the base premium ($BP$): 1 ETH per policy.
+    \item On top of the base premium, we have some operational costs ($OC$). 
+    To make things simple, we assume the operational costs to be 10\% of the base premium.
+    \item Furthermore, we have to cover the interest rate ($IR$) and risk premium ($RP$) for the investors. 
+    The idea is that we pay a risk-free interest rate and on top an adequate bonus for the risk. \\
+    QUESTION Q1: Out of these parameters, can we calculate an adequate interest rate and risk premium for the investors? \\
+    QUESTION Q2: Is there a “risk-free” interest rate ($RFIR$) in the crypto world which could serve as a baseline? \\
+    \texttt{\href{https://en.wikipedia.org/wiki/Risk-free_interest_rate}
+    {https://en.wikipedia.org/wiki/Risk-free\_interest\_rate}}\\
+    Proposal: the ``risk free interest rate'' is the expected revenue which a rational player
+    would expect for locking an amount of money for a certain time, covering the volatility risks of the crypto coin.
+    \item The gross premium ($GP$) is calculated as follows:
+    \begin{equation} \label{eq:GP1} GP = (IV \cdot PD) \cdot (1 + OC + IR + RP) \end{equation}
+    \item Out ouf these parameters, we calculate a “Coverage ratio” ($CR$) (is this the right term?): 
+    The coverage ratio is the amount of insured value I can underwrite given a certain amount of risk capital.
+    For example, if the Coverage ratio is 20\%, I can insure 1,000,000 \ETH\ with a risk capital of 200,000 \ETH.\\
+    QUESTION Q3: Can we calculate this coverage ratio, and how?
+\end{enumerate}
+
+\section{RSC Token}
+
+\begin{enumerate}
+    \item We create an ERC-20 Token ``RSC'', at the beginning with a cap of $TC$ Tokens.
+    \item The Token is sold during an ICO at a rate of 1:1 (1 RSC = 1 \ETH).
+    \item The proceeds $PR$ from selling $TS \le TC$ tokens in the ICO form the liquidity pool $LP$; $PR = LP = TS\ \Upxi$.
+    \item From the liquidity pool, a ``free risk volume'' $FRV_{start}$ is generated by
+    \begin{equation} \label{eq:FRV_start} FRV_{start} = \frac{LP}{CR} \end{equation}
+    \item On the other hand, if we sell policies , we need to bind the risk capital to these policies.
+    We denote the amount of bound risk capital with $BRV$. 
+    Every sold policy reduces the $FRV$ by its $IV$ and increases the $BRV$ by the same amount.
+    We designate the number of sold policies with $NP_{sold}$ and the number of active policies with $NP_{act}$. 
+    After that, the remaining free risk volume is
+    \begin{equation} \label{eq:FRV_rem} FRV_{rem} = \frac{LP}{CR} - NP_{act} \cdot IV \end{equation}
+    \item Every expired policy increases the $FRV$ by its $IV$ and reduces the $BRV$ by the same amount. 
+    The number of expired policies is denoted by $NP_{exp}$.
+    \item We get the following invariant: 
+    \begin{equation} \label{eq:inv} \frac{LP}{CR} = {FRV} + {BRV} \end{equation}
+    \item Every damage $D$ decreases the liquidity pool $LP$ and the bound risk volume $BRV$ $D$. 
+    If we assume that \eqref{eq:inv} holds, then we get
+    \begin{equation} \label{eq:delta_FRV} \frac{LP - D}{CR} = ({FRV} + \Delta {FRV})  + ({BRV} - {D}) \end{equation}    
+    and therefore
+    \begin{equation} \label{eq:delta_FRV2} \Delta {FRV} = {D} \frac{CR-1}{CR} \end{equation}
+    If $CR$ is fairly small (e.g. 10\%), a damage decreases the free risk volume $FRV$  by a factor of 9, because
+    liquidity leverages the $FRV$ 
+    \item If $ FRV = 0$, no more policies can be sold. 
+    \item We define a lower bound $B_1$ for the free risk volume. If $ FRV < B $, 
+    new tokens are minted and sold at market price, yielding proceeds of $PR_{new}$. 
+    The proceeds increase the liquidity, and because of the leverage effect of the $CR$ this leads 
+    to an over-proprortional increase of the $FRV$. 
+    If $FRV < B$ and we want to increase $FRV$ by $\Delta FRV$ to get over the lower bound $B$ again, we solve
+    \begin{equation} \label{eq:growth} \frac{LP + PR_{new}}{CR} = FRV + \Delta FRV + BRV  \end{equation} yielding
+    \begin{equation} \label{eq:delta_PR} {PR_{new}} = \Delta FRV\cdot CR \end{equation}
+    Again, a small increase in liquidity yields a large increase in free risk capital.
+    This process can be automated in the contract: if there is need for fresh capital, the contract can 
+    automatically mint new tokens and ensure that there is always enough free risk volume $FRV$ so that 
+    new policies can be sold.
+    \item In theory, the reverse process is also possible: If there is sustainable low demand for policies,
+    and therefore the ratio of free to bound volume very high, the contract could buy tokens back and burn them,
+    reducing liquidity $LP$ and accordingly the free risk volume $FRV$. 
+\end{enumerate}
+\subsubsection{Conclusion:} the concepts of free and bound risk volume together with liquidity and coverage rate
+provide a simple and effective framework for automatic adjustment of token production. 
+
+\section{Collecting premiums}
+\begin{enumerate}
+\item As we have seen, the gross premium $GP$ has some components: part of the premiums $IV \cdot PD$ will cover the 
+expected damages, operational costs $OC$ have to be covered and the rest is for investors: paying a fair 
+interest rate $IR$ and risk premium $RP$.
+\begin{equation} \label{eq:GP2}
+    GP = (IV \cdot PD) \cdot (1 + OC + IR + RP)
+\end{equation}
+$OC$, $IR$ and $RP$ will be paid directly and have no significant influence on the liquidity pool $LP$. 
+\item The base premium $IV \cdot PD$ will cover normal damages. Depending on the risk structure and the individual
+damage events, there will be periods of time where $IV \cdot PD$ will cover less than the total damages, in other
+periods there will be excess.
+\item In our model, we will assume that excess premiums aren't paid back to customers, but instead increase the 
+liquidity pool $LP$. Reciprocally, the liquidity pool will cover excessive damages. In the next section, we 
+discuss this more in depth.
+\end{enumerate}
+
+\section{Covering damages}
+\begin{enumerate}
+\item What happens if the base premium $IV \cdot PD$ does not cover all damages in a certain intervall of time?
+After consuming $IV \cdot PD$, these excessive damages are covered by the liquidity pool $LP$.
+Due to $CR \ll 1$ we can expect that in theory there are black swan events where the sum of all damages 
+exceeds even $LP$. We assume that in such an event, a big number $ND$ of damages occur with 
+$ND \cdot IV \gg (IV \cdot PD) + LP$. 
+\item A first approach would be to pay out the whole $LP$, 
+so every customer gets a partial payout
+\begin{equation} \label{eq:dam1}
+    PP = \frac{(IV \cdot PD) + LP}{ND}
+\end{equation}
+\item If $ND < NP_{act}$, a number of customers is left without any protection.
+To avoid this, we should pay out no more than
+\begin{equation} \label{eq:dam2}
+    PL = \frac{(IV \cdot PD) + LP}{NP_{act}}
+\end{equation} 
+So the remaining customers have at least the same coverage as the customers which are getting their payout.
+\item The same applies if $ND \cdot IV < LP$. In this case, all claims could be fully paid out, but again discriminating
+the remaining customers. We end up in paying at most $\min(PL, IV)$. 
+\item The payout limiting term $PL$ seems to play an important role. 
+It is an upper bound for even a single payout in case of a damage. 
+The contract should always be ``far enough away'' from this limit. 
+\item We can introduce a second bound $B_2 < 1$ with the same functionality as the bound $B_1$ above:
+if $IV > B_2 \cdot PL$, new tokens are minted until the bound is met again.
+\item A third bound $B_3 > 1 $ serves as an absolute limit for accepting new policies. As soon as $IV > B_3 \cdot PL$, every customer gets only a fraction $\frac{IV}{B_3}$ of their actual claim. Therefore, $B_3$ should be not to high, but maybe e.g. $B_3 = 1.5$ would be acceptable.
+
+\end{enumerate}
+
+\section{Contract pseudocode}
+This is a first draft of some contract, I've left out all the ERC-20 standard stuff (transfering tokens, etc.)
+
+
+\bibliography{references}
+\nocite{*} 
+
+\end{document}
