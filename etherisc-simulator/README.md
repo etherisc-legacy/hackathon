@@ -24,7 +24,7 @@ This model simulates incoming premiums and outgoing payouts over time, modeled a
 
 ### Variable payouts model
 
-In the variable payouts model, we accept as input a vector of event probabilities and a vector of desired premiums. The model calculates the collateral required for the portfolio and the premiums corresponding to the payouts.
+In the variable payouts model, we accept as input a vector of event probabilities and a vector of desired payouts. The model calculates the collateral required for the portfolio and the premiums corresponding to the payouts.
 
 To see one round of estimation for the model (with randomly generated probabilities and premiums), run:
 
