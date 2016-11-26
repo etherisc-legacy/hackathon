@@ -16,4 +16,10 @@ Developed on Python 3.5. Use `pip` to install:
     
 ### Running
 
-    ./etherisc-sim.py
+Simple model with constant payout and probability of insurable event:
+
+    ./etherisc-simple-model.py
+
+Model with variable payouts and probabilities:
+
+    ./etherisc-variable-payouts.py

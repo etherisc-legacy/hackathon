@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-21 21:23:13
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-21 21:32:23
+# @Last Modified time: 2016-11-26 11:29:35
 
 from distutils.core import setup
 
@@ -13,7 +13,7 @@ setup(name='etherisc-simulator',
   author_email='jake@coinfund.io',
   url='http://github.com/etherisc/hackathon/etherisc-simulator',
   packages=['etherisc'],
-  scripts=['bin/etherisc-sim.py'],
+  scripts=['bin/etherisc-simple-model.py', 'bin/etherisc-variable-payouts.py'],
   install_requires=[
     'numpy',
     'scipy'
