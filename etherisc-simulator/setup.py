@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-21 21:23:13
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-26 11:29:35
+# @Last Modified time: 2016-11-26 11:48:36
 
 from distutils.core import setup
 
@@ -16,6 +16,6 @@ setup(name='etherisc-simulator',
   scripts=['bin/etherisc-simple-model.py', 'bin/etherisc-variable-payouts.py'],
   install_requires=[
     'numpy',
-    'scipy'
+    'scipy',
   ],
 )

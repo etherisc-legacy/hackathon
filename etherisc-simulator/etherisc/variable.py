@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-26 11:45:23
+# @Last Modified time: 2016-11-26 12:16:08
 
 import numpy as np
 from scipy.stats import binom
@@ -47,6 +47,8 @@ class VariableEstimator():
 
   def __calculate(self):
 
+    self.n  = len(self.ps)
+
     # payout liability mean and stdev
     self.mu = np.sum(self.ps * self.Ps)
     self.sd = np.sqrt(np.sum(self.Ps**2 * (1 - self.ps) * self.ps))
@@ -66,6 +68,7 @@ class VariableEstimator():
     self.r  = self.L / self.C
 
   def __str__(self):
+    m = np.matrix((range(self.n), self.ps, self.Pr, self.Ps)).getT()
     return """
       mu:  %0.2f
       sd:  %0.2f
@@ -73,10 +76,8 @@ class VariableEstimator():
       C:   $%0.2f
       r:   %0.2f
 
-      p:   %s
-      Ps:  %s
-      Pr:  %s
-    """ % (self.mu, self.sd, self.L, self.C, self.r, self.ps, self.Ps, self.Pr)
+      out:\n%s
+    """ % (self.mu, self.sd, self.L, self.C, self.r, m)
 
 class VariablePool():
 
