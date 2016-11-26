@@ -2,21 +2,45 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-25 22:11:22
+# @Last Modified time: 2016-11-26 11:45:23
 
 import numpy as np
 from scipy.stats import binom
 from scipy.stats.mstats import mquantiles
 
-class VariablePayoutsEstimator():
+class VariableEstimator():
 
-  def __init__(self, p, Ps, pi=.9999, N=100000):
-    self.p  = np.array(p)        # array of event probabilities
-    self.Ps = np.array(Ps)       # array of corresponding desired payouts
-    self.pi = pi                 # desired confidence level for solvency
-    self.N  = N                  # Monte Carlo iterations
+  """
+  An insurance model estimator for a model with
+  variable payouts and event probabilities, as
+  described: 
 
-    if len(p) != len(Ps):
+  https://www.sharelatex.com/project/582f437341592a79643495e3
+  """
+
+  def __init__(self, ps, Ps, pi=.9999, N=100000):
+    """
+    Inputs:
+
+      ps             a vector of event probabilities
+      Ps             a vector of desired payouts
+      pi             desired confidence level
+      N              iterations for Monte Carlo simulation
+
+    Outputs:
+      
+      C              required capitalization
+      L              total liability
+      Pr             a vector of corresponding premiums
+      r              return multiple
+    """
+
+    self.ps  = np.array(ps)      
+    self.Ps = np.array(Ps)       
+    self.pi = pi                 
+    self.N  = N               
+
+    if len(ps) != len(Ps):
       raise Exception('len(p) != len(Ps)')
 
     self.__calculate()
@@ -24,14 +48,14 @@ class VariablePayoutsEstimator():
   def __calculate(self):
 
     # payout liability mean and stdev
-    self.mu = np.sum(self.p * self.Ps)
-    self.sd = np.sqrt(np.sum(self.Ps**2 * (1 - self.p) * self.p))
+    self.mu = np.sum(self.ps * self.Ps)
+    self.sd = np.sqrt(np.sum(self.Ps**2 * (1 - self.ps) * self.ps))
 
     # total liability
     self.L  = np.sum(self.Ps)
 
     # do a Monte Carlo simulation to find C, collateral
-    m = np.matrix([binom.rvs(1, p, size=self.N) for p in self.p])
+    m = np.matrix([binom.rvs(1, p, size=self.N) for p in self.ps])
     samples = np.array(self.Ps * m)
     self.C = mquantiles(samples, prob=[self.pi], alphap=1, betap=1) # Type 7
 
@@ -52,12 +76,12 @@ class VariablePayoutsEstimator():
       p:   %s
       Ps:  %s
       Pr:  %s
-    """ % (self.mu, self.sd, self.L, self.C, self.r, self.p, self.Ps, self.Pr)
+    """ % (self.mu, self.sd, self.L, self.C, self.r, self.ps, self.Ps, self.Pr)
 
 class VariablePool():
 
-  def __init__(self, p=[], Ps=[], pi=.9999, N=100000):
-    self.p  = p
+  def __init__(self, ps=[], Ps=[], pi=.9999, N=100000):
+    self.ps  = ps
     self.Ps = Ps
     self.pi = pi
     self.N  = N
@@ -65,7 +89,7 @@ class VariablePool():
   
   def issue(self, payout, prob=None, index=None):
     if prob:
-      self.p = np.append(self.p, prob)
+      self.ps = np.append(self.ps, prob)
       self.Ps = np.append(self.Ps, payout)
       index = -1
     elif index:
@@ -73,7 +97,7 @@ class VariablePool():
     else:
       raise Exception('must provide prob or index')
 
-    estimator = VariablePayoutsEstimator(self.p, self.Ps, self.pi, self.N)
+    estimator = VariablePayoutsEstimator(self.ps, self.Ps, self.pi, self.N)
     print('* issuing policy @ %0.2f paying %0.2f (r=%0.2f)' % (estimator.Pr[index], estimator.Ps[index], estimator.Ps[index] / estimator.Pr[index]))
 
     self.C += estimator.Pr[index]
