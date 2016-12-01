@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-21 21:23:13
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-30 21:29:03
+# @Last Modified time: 2016-11-30 21:40:17
 
 from distutils.core import setup
 
@@ -14,13 +14,11 @@ setup(name='etherisc-simulator',
   url='http://github.com/etherisc/hackathon/etherisc-simulator',
   packages=['etherisc'],
   scripts=[
-    'bin/etherisc-simple-model.py', 
-    'bin/etherisc-variable-payouts.py', 
-    'bin/etherisc-end2end.py',
     'bin/riscsim.py',
   ],
   install_requires=[
     'numpy',
     'scipy',
+    'docopt'
   ],
 )

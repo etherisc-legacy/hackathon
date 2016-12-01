@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-30 21:33:35
+# @Last Modified time: 2016-11-30 22:07:32
 
 import numpy as np
 from scipy.stats import binom
@@ -41,14 +41,14 @@ class VariableEstimator():
 
     # set the labels
     if not labels:
-      self.labels = range(len(ps)) + 1
+      self.labels = range(len(ps))
     else:
       self.labels = labels
 
     # consistency check
     if len(ps) != len(Ps):
       raise Exception('len(p) != len(Ps)')
-    if len(labels) != len(ps):
+    if len(self.labels) != len(ps):
       raise Exception('len(p) != len(labels)')
 
     # calculate the model outputs
