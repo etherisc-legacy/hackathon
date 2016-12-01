@@ -4,7 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-30 22:05:30
+# @Last Modified time: 2016-12-01 16:32:13
 
 """
 riscsim.py
@@ -12,6 +12,8 @@ Etherisc decentralized insurance model simulator.
 
 Usage:
   riscsim.py estimaterandom [-n N] [-p PAYOUT]
+  riscsim.py estimatedata FILENAME [-p PAYOUT]
+
 
 Options:
   -n, --events N          the number of insurable events [default: 10]
@@ -19,7 +21,7 @@ Options:
 """
 
 from docopt import docopt
-from etherisc.output import estimaterandom
+from etherisc.output import estimaterandom, estimatedata
 
 import numpy as np
 
@@ -33,6 +35,9 @@ def main(args):
     """
     n, payout = int(args['--events']), int(args['--payout'])
     estimaterandom(n=n, payout=payout)
+
+  elif args['estimatedata']:
+    estimatedata(args['FILENAME'])
 
   elif args['flightdata']:
     pass
