@@ -14,22 +14,29 @@ Developed on Python 3.5. Use `pip` to install:
 
     pip install . --upgrade
     
-### Simple model
+### Usage
 
-Run the simple model:
+The simulator runs as a single command line program called `riscsim.py`, which currently has the following functionality.
 
-    ./etherisc-simple-model.py
+    riscsim.py
+    Etherisc decentralized insurance model simulator.
 
-This model simulates incoming premiums and outgoing payouts over time, modeled as a Poisson distribution. At each round, we use a simple insurance model which assumes a constant payout across all policies and a single probability of insurable events.
+    Usage:
+      riscsim.py estimaterandom [-n N] [-p PAYOUT]
+      riscsim.py estimatedata FILENAME [-p PAYOUT] [-r SAMPLESIZE]
 
-### Variable payouts model
 
-In the variable payouts model, we accept as input a vector of event probabilities and a vector of desired payouts. The model calculates the collateral required for the portfolio and the premiums corresponding to the payouts.
+    Options:
+      -n, --events N          the number of insurable events [default: 10]
+      -p, --payout PAYOUT     the average payout parameter [default: 500]
+      -r, --random            select a random sample of events     
 
-To see one round of estimation for the model (with randomly generated probabilities and premiums), run:
+### Examples
 
-    ./etherisc-variable-payouts.py --estimate
+Simulate the Etherisc insurance model with randomly generated data:
 
-You can also adjust the number of events `-n` and the `--average-payout`:
+    riscsim.py estimaterandom --events 100 --payout 500
 
-    ./etherisc-variable-payouts.py --estimate -n 100 --average-payout 300
+Simulate the Etherisc insurance model with real flight delay data:
+
+    riscsim.py estimatedata data/flightRatings.csv --payout 200

@@ -2,9 +2,11 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-30 22:07:32
+# @Last Modified time: 2016-12-01 17:16:55
 
 import numpy as np
+import pandas as pd
+
 from scipy.stats import binom
 from scipy.stats.mstats import mquantiles
 
@@ -81,7 +83,13 @@ class VariableEstimator():
     self.r  = self.L / self.C
 
   def __str__(self):
-    m = np.matrix((self.labels, self.ps, self.Pr, self.Ps)).getT()
+    df = pd.concat([
+      pd.DataFrame(self.ps), 
+      pd.DataFrame(self.Pr), 
+      pd.DataFrame(self.Ps)], 
+      axis=1)
+    df.index = self.labels
+    df.columns = ['probs', 'premiums', 'payouts']
     return """
       n:   %d
       mu:  %0.2f
@@ -92,4 +100,4 @@ class VariableEstimator():
       r:   %0.2f
 
       out:\n%s
-    """ % (self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, m)
+    """ % (self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, df)
