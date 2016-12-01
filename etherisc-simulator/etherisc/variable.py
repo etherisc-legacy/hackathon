@@ -2,22 +2,20 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-30 21:14:13
+# @Last Modified time: 2016-11-30 21:33:35
 
 import numpy as np
 from scipy.stats import binom
 from scipy.stats.mstats import mquantiles
 
 class VariableEstimator():
-
   """
   An insurance model estimator for a model with
   variable payouts and event probabilities, as
-  described: 
+  described here: 
 
   https://www.sharelatex.com/project/582f437341592a79643495e3
   """
-
   def __init__(self, ps, Ps, labels=None, pi=.9999, N=100000):
     """
     Inputs:
@@ -35,28 +33,33 @@ class VariableEstimator():
       r              return multiple
     """
 
+    # set the input parameters
     self.ps  = np.array(ps)      
-    self.Ps = np.array(Ps)       
-    self.pi = pi                 
-    self.N  = N
+    self.Ps  = np.array(Ps)       
+    self.pi  = pi                 
+    self.N   = N
 
+    # set the labels
     if not labels:
       self.labels = range(len(ps)) + 1
     else:
       self.labels = labels
 
+    # consistency check
     if len(ps) != len(Ps):
       raise Exception('len(p) != len(Ps)')
     if len(labels) != len(ps):
       raise Exception('len(p) != len(labels)')
 
+    # calculate the model outputs
     self.__calculate()
 
   def __calculate(self):
     """
-    
+    Calculate the model outputs based on the input parameters.
     """
 
+    # number of insurable events
     self.n  = len(self.ps)
 
     # payout liability mean and stdev
@@ -90,28 +93,3 @@ class VariableEstimator():
 
       out:\n%s
     """ % (self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, m)
-
-class VariablePool():
-
-  def __init__(self, ps=[], Ps=[], pi=.9999, N=100000):
-    self.ps  = ps
-    self.Ps = Ps
-    self.pi = pi
-    self.N  = N
-    self.C  = 0
-  
-  def issue(self, payout, prob=None, index=None):
-    if prob:
-      self.ps = np.append(self.ps, prob)
-      self.Ps = np.append(self.Ps, payout)
-      index = -1
-    elif index:
-      self.Ps[index] += payout
-    else:
-      raise Exception('must provide prob or index')
-
-    estimator = VariablePayoutsEstimator(self.ps, self.Ps, self.pi, self.N)
-    print('* issuing policy @ %0.2f paying %0.2f (r=%0.2f)' % (estimator.Pr[index], estimator.Ps[index], estimator.Ps[index] / estimator.Pr[index]))
-
-    self.C += estimator.Pr[index]
-    self.L = estimator.L
