@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-11-29 16:25:44
+# @Last Modified time: 2016-11-30 21:14:13
 
 import numpy as np
 from scipy.stats import binom
@@ -18,7 +18,7 @@ class VariableEstimator():
   https://www.sharelatex.com/project/582f437341592a79643495e3
   """
 
-  def __init__(self, ps, Ps, pi=.9999, N=100000, seedcapital=0):
+  def __init__(self, ps, Ps, labels=None, pi=.9999, N=100000):
     """
     Inputs:
 
@@ -39,10 +39,16 @@ class VariableEstimator():
     self.Ps = np.array(Ps)       
     self.pi = pi                 
     self.N  = N
-    self.seedcapital = seedcapital               
+
+    if not labels:
+      self.labels = range(len(ps)) + 1
+    else:
+      self.labels = labels
 
     if len(ps) != len(Ps):
       raise Exception('len(p) != len(Ps)')
+    if len(labels) != len(ps):
+      raise Exception('len(p) != len(labels)')
 
     self.__calculate()
 
@@ -66,13 +72,13 @@ class VariableEstimator():
     self.C = mquantiles(samples, prob=[self.pi], alphap=1, betap=1) # Type 7
 
     # calculate the premiums
-    self.Pr = (self.ps * self.Ps) / (np.sum(self.ps * self.Ps)) * (self.C - self.seedcapital)
+    self.Pr = (self.ps * self.Ps) / (np.sum(self.ps * self.Ps)) * self.C
 
     # return multiple
-    self.r  = self.L / (self.C - self.seedcapital)
+    self.r  = self.L / self.C
 
   def __str__(self):
-    m = np.matrix((range(self.n), self.ps, self.Pr, self.Ps)).getT()
+    m = np.matrix((self.labels, self.ps, self.Pr, self.Ps)).getT()
     return """
       n:   %d
       mu:  %0.2f
