@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-01 17:16:55
+# @Last Modified time: 2016-12-01 17:25:02
 
 import numpy as np
 import pandas as pd
@@ -91,6 +91,7 @@ class VariableEstimator():
     df.index = self.labels
     df.columns = ['probs', 'premiums', 'payouts']
     return """
+      outputs:\n\n%s\n
       n:   %d
       mu:  %0.2f
       sd:  %0.2f
@@ -99,5 +100,5 @@ class VariableEstimator():
       %%:   %0.2f
       r:   %0.2f
 
-      out:\n%s
-    """ % (self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, df)
+
+    """ % (df, self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r)
