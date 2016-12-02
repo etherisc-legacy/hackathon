@@ -4,7 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-02 10:26:54
+# @Last Modified time: 2016-12-02 10:30:50
 
 """
 riscsim.py
@@ -19,8 +19,8 @@ Options:
   -n, --events=<N>                   the number of insurable events [default: 10]
   -p, --payout=<PAYOUT>              the average payout parameter [default: 500]
   -r, --random=<SAMPLESIZE>          select a random sample of events [default: 0]
-  -m=<MINPROB>, --minprob=<MINPROB>  set the minimum event probability we're willing to underwrite [default: 0.001]
-  -M=<MAXPROB>, --maxprob=<MAXPROB>  set the maximum event probability we're willing to underwrite [default: 0.20]
+  -m, --minprob=<MINPROB>  set the minimum event probability we're willing to underwrite [default: 0.001]
+  -M, --maxprob=<MAXPROB>  set the maximum event probability we're willing to underwrite [default: 0.20]
 """
 
 from docopt import docopt
