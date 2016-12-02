@@ -22,16 +22,16 @@ The simulator runs as a single command line program called `riscsim.py`, which c
     Etherisc decentralized insurance model simulator.
 
     Usage:
-      riscsim.py estimaterandom [-n=<N>] [-p=<PAYOUT>]
-      riscsim.py estimatedata FILENAME [-p=<PAYOUT>] [-r=<SAMPLESIZE>] [--minprob=<MINPROB>] [--maxprob=<MAXPROB>]
+      riscsim.py estimaterandom [-n N] [-p PAYOUT]
+      riscsim.py estimatedata FILENAME [-p PAYOUT] [-r SAMPLESIZE] [--minprob MINPROB] [--maxprob MAXPROB]
 
 
     Options:
-      -n, --events=<N>                   the number of insurable events [default: 10]
-      -p, --payout=<PAYOUT>              the average payout parameter [default: 500]
-      -r, --random=<SAMPLESIZE>          select a random sample of events [default: 0]
-      -m, --minprob=<MINPROB>  set the minimum event probability we're willing to underwrite [default: 0.001]
-      -M, --maxprob=<MAXPROB>  set the maximum event probability we're willing to underwrite [default: 0.20]   
+      -n, --events N             the number of insurable events [default: 10]
+      -p, --payout PAYOUT        the average payout parameter [default: 500]
+      -r, --random SAMPLESIZE    select a random sample of events [default: 0]
+      -m, --minprob MINPROB      set the minimum event probability we're willing to underwrite [default: 0.001]
+      -M, --maxprob MAXPROB      set the maximum event probability we're willing to underwrite [default: 0.20]   
 
 ### Examples
 
