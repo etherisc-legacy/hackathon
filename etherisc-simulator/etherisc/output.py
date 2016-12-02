@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-01 17:16:22
+# @Last Modified time: 2016-12-02 10:27:29
 
 from scipy.stats import norm, uniform
 from etherisc.variable import VariableEstimator
@@ -18,16 +18,15 @@ def estimaterandom(n=10, payout=500):
   estimator = VariableEstimator(ps=ps, Ps=Ps)
   print(estimator)
 
-def estimatedata(filename, datatype='flightcsv', payout=500, randomsample=0):
+def estimatedata(filename, datatype='flightcsv', payout=500, randomsample=0, minprob=0.001, maxprob=0.20):
   """
   Load actual data for model estimation.
   """
 
   # process the data
   if datatype is 'flightcsv':
-    data = extract_flight_csv(filename)
-    if randomsample and randomsample > 0:
-      print('sampling', randomsample)
+    data = extract_flight_csv(filename, minprob=minprob, maxprob=maxprob)
+    if randomsample > 0:
       data = data.sample(randomsample)
   else:
     raise Exception('unknown datatype %s' % datatype)

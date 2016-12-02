@@ -4,7 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-02 10:22:33
+# @Last Modified time: 2016-12-02 10:26:54
 
 """
 riscsim.py
@@ -12,13 +12,15 @@ Etherisc decentralized insurance model simulator.
 
 Usage:
   riscsim.py estimaterandom [-n=<N>] [-p=<PAYOUT>]
-  riscsim.py estimatedata FILENAME [-p=<PAYOUT>] [-r=<SAMPLESIZE>]
+  riscsim.py estimatedata FILENAME [-p=<PAYOUT>] [-r=<SAMPLESIZE>] [--minprob=<MINPROB>] [--maxprob=<MAXPROB>]
 
 
 Options:
-  -n, --events=<N>              the number of insurable events [default: 10]
-  -p, --payout=<PAYOUT>         the average payout parameter [default: 500]
-  -r, --random=<SAMPLESIZE>     select a random sample of events [default: 0] 
+  -n, --events=<N>                   the number of insurable events [default: 10]
+  -p, --payout=<PAYOUT>              the average payout parameter [default: 500]
+  -r, --random=<SAMPLESIZE>          select a random sample of events [default: 0]
+  -m=<MINPROB>, --minprob=<MINPROB>  set the minimum event probability we're willing to underwrite [default: 0.001]
+  -M=<MAXPROB>, --maxprob=<MAXPROB>  set the maximum event probability we're willing to underwrite [default: 0.20]
 """
 
 from docopt import docopt
@@ -33,6 +35,8 @@ def main(args):
   n             = int(args['--events'])
   payout        = int(args['--payout'])
   samplesize    = int(args['--random'])
+  minprob       = float(args['--minprob'])
+  maxprob       = float(args['--maxprob'])
 
   if args['estimaterandom']:
     """
@@ -44,7 +48,8 @@ def main(args):
     """
     Estimate the Etherisc credit model from a CSV file.
     """
-    estimatedata(args['FILENAME'], payout=payout, randomsample=samplesize)
+    estimatedata(args['FILENAME'], payout=payout, randomsample=samplesize,
+      minprob=minprob, maxprob=maxprob)
 
   elif args['flightdata']:
     pass
