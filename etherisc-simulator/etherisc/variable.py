@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-01 17:25:02
+# @Last Modified time: 2016-12-02 11:00:05
 
 import numpy as np
 import pandas as pd
@@ -82,7 +82,10 @@ class VariableEstimator():
     # return multiple
     self.r  = self.L / self.C
 
-  def __str__(self):
+    # revenue
+    self.R  = self.C - self.mu
+
+  def df(self):
     df = pd.concat([
       pd.DataFrame(self.ps), 
       pd.DataFrame(self.Pr), 
@@ -90,6 +93,10 @@ class VariableEstimator():
       axis=1)
     df.index = self.labels
     df.columns = ['probs', 'premiums', 'payouts']
+    df['r'] = df['payouts'] / df['premiums']
+    return df
+
+  def __str__(self):
     return """
       outputs:\n\n%s\n
       n:   %d
@@ -99,6 +106,5 @@ class VariableEstimator():
       C:   $%0.2f
       %%:   %0.2f
       r:   %0.2f
-
-
-    """ % (df, self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r)
+      R:   $%0.2f
+    """ % (self.df(), self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, self.R)
