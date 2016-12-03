@@ -4,11 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-<<<<<<< ff7f4efd0d9342b15db04fc3f6ce79997d03f3b2
-# @Last Modified time: 2016-12-02 10:40:57
-=======
-# @Last Modified time: 2016-12-03 18:06:13
->>>>>>>  command
+# @Last Modified time: 2016-12-03 18:10:24
 
 """
 riscsim.py
@@ -18,12 +14,7 @@ Usage:
 <<<<<<< ff7f4efd0d9342b15db04fc3f6ce79997d03f3b2
   riscsim.py estimaterandom [-n N] [-p PAYOUT]
   riscsim.py estimatedata FILENAME [-p PAYOUT] [-r SAMPLESIZE] [--minprob MINPROB] [--maxprob MAXPROB]
-
-=======
-  riscsim.py estimaterandom [-n=<N>] [-p=<PAYOUT>]
-  riscsim.py estimatedata FILENAME [-p=<PAYOUT>] [-r=<SAMPLESIZE>] [--minprob=<MINPROB>] [--maxprob=<MAXPROB>]
-  riscsim.py simulate FILENAME [-p=<PAYOUT>]
->>>>>>>  command
+  riscsim.py simulate FILENAME [-p PAYOUT]
 
 Options:
   -n, --events N             the number of insurable events [default: 10]
@@ -65,7 +56,7 @@ def main(args):
     simulate(args['FILENAME'], payout=payout)
 
 
-def settings():
+def __settings():
   """
   Turn on default settings for the environment.
   """
@@ -77,5 +68,5 @@ if __name__ == '__main__':
   Read the command line arguments.
   """
   args = docopt(__doc__)
-  settings()
+  __settings()
   main(args)
