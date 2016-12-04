@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 18:53:14
+# @Last Modified time: 2016-12-03 21:43:43
 
 from scipy.stats import norm, uniform
 from etherisc.variable import VariableEstimator
@@ -45,7 +45,7 @@ def __estimatedata(data, payout=500, randomsample=0):
     data = data.sample(randomsample)
   
   # get the model parameters
-  probs = data['probs']
+  probs = data['prob']
   payouts = [payout] * len(probs)
   labels = list(data.index)
 

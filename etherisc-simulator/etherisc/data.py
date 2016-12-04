@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-12-01 15:25:37
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 18:36:26
+# @Last Modified time: 2016-12-03 21:43:21
 
 import numpy as np
 import pandas as pd
@@ -24,8 +24,8 @@ def extract_flight_csv(filename, minprob=0.001, maxprob=.20):
     'ontimePercent'
   ]]
   df.index = labels
-  df.columns = ['probs']
-  df = df[(df['probs'] >= minprob) & (df['probs'] <= maxprob)]
+  df.columns = ['prob']
+  df = df[(df['prob'] >= minprob) & (df['prob'] <= maxprob)]
 
   # remove dupes
   df = df[~df.index.duplicated(keep='first')]
