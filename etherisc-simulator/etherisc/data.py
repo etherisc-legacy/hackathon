@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-12-01 15:25:37
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-01 16:42:26
+# @Last Modified time: 2016-12-03 18:36:26
 
 import numpy as np
 import pandas as pd
@@ -14,7 +14,10 @@ def extract_flight_csv(filename, minprob=0.001, maxprob=.20):
   formatted pandas DataFrame.
   """
   df = pd.read_csv(filename)
-  labels = df.apply(lambda x: '%s_%s_%s_%s' % (x['airlineFsCode'], x['flightNumber'], x['departureAirportFsCode'], x['arrivalAirportFsCode']),
+  labels = df.apply(lambda x: '%s_%s_%s_%s' % (x['airlineFsCode'], 
+    x['flightNumber'], 
+    x['departureAirportFsCode'], 
+    x['arrivalAirportFsCode']),
     axis = 1
   )
   df = 1.0 - df[[
@@ -22,5 +25,8 @@ def extract_flight_csv(filename, minprob=0.001, maxprob=.20):
   ]]
   df.index = labels
   df.columns = ['probs']
-  return df[(df['probs'] >= minprob) & (df['probs'] <= maxprob)]
+  df = df[(df['probs'] >= minprob) & (df['probs'] <= maxprob)]
 
+  # remove dupes
+  df = df[~df.index.duplicated(keep='first')]
+  return df

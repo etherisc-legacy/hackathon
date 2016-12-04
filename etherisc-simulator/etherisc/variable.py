@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-02 11:00:05
+# @Last Modified time: 2016-12-03 19:02:27
 
 import numpy as np
 import pandas as pd
@@ -84,21 +84,25 @@ class VariableEstimator():
 
     # revenue
     self.R  = self.C - self.mu
+    self.outputs() # cache the outputs
 
-  def df(self):
-    df = pd.concat([
+  def outputs(self):
+    if hasattr(self, 'df'):
+      return self.df
+
+    self.df = pd.concat([
       pd.DataFrame(self.ps), 
       pd.DataFrame(self.Pr), 
       pd.DataFrame(self.Ps)], 
       axis=1)
-    df.index = self.labels
-    df.columns = ['probs', 'premiums', 'payouts']
-    df['r'] = df['payouts'] / df['premiums']
-    return df
+    self.df.index = self.labels
+    self.df.columns = ['probs', 'premiums', 'payouts']
+    self.df['r'] = self.df['payouts'] / self.df['premiums']
+    return self.df
 
   def __str__(self):
     return """
-      outputs:\n\n%s\n
+      model:\n\n%s\n
       n:   %d
       mu:  %0.2f
       sd:  %0.2f
@@ -107,4 +111,4 @@ class VariableEstimator():
       %%:   %0.2f
       r:   %0.2f
       R:   $%0.2f
-    """ % (self.df(), self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, self.R)
+    """ % (self.outputs(), self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, self.R)

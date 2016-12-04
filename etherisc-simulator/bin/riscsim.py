@@ -4,17 +4,16 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 18:10:24
+# @Last Modified time: 2016-12-03 19:49:02
 
 """
 riscsim.py
 Etherisc decentralized insurance model simulator.
 
 Usage:
-<<<<<<< ff7f4efd0d9342b15db04fc3f6ce79997d03f3b2
   riscsim.py estimaterandom [-n N] [-p PAYOUT]
   riscsim.py estimatedata FILENAME [-p PAYOUT] [-r SAMPLESIZE] [--minprob MINPROB] [--maxprob MAXPROB]
-  riscsim.py simulate FILENAME [-p PAYOUT]
+  riscsim.py simulate FILENAME [-p PAYOUT] [--minprob MINPROB] [--maxprob MAXPROB]
 
 Options:
   -n, --events N             the number of insurable events [default: 10]
@@ -25,7 +24,7 @@ Options:
 """
 
 from docopt import docopt
-from etherisc.output import estimaterandom, estimatedata
+from etherisc.output import estimaterandom, estimatedata, simulate
 
 import numpy as np
 
@@ -53,7 +52,10 @@ def main(args):
       minprob=minprob, maxprob=maxprob)
 
   elif args['simulate']:
-    simulate(args['FILENAME'], payout=payout)
+    """
+    Simulate Etherisc.
+    """
+    simulate(args['FILENAME'], payout=payout, maxprob=maxprob, minprob=minprob)
 
 
 def __settings():
