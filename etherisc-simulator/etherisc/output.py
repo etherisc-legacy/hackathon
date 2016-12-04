@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 18:04:19
+# @Last Modified time: 2016-12-03 18:53:14
 
 from scipy.stats import norm, uniform
 from etherisc.variable import VariableEstimator
@@ -64,8 +64,14 @@ def __loaddata(filename, datatype='flightcsv', minprob=0.001, maxprob=0.20):
     raise Exception('unknown datatype %s' % datatype)
 
 
-def __simulate(data, payout=500, minprob=0.001, maxprob=0.20):
+def simulate(filename, datatype='flightcsv', payout=500, minprob=0.001, maxprob=0.20):
   data = __loaddata(filename, datatype=datatype, minprob=minprob, maxprob=maxprob)
+  __simulate(data, payout=payout, minprob=minprob, maxprob=maxprob)
+
+def __simulate(data, payout=500, minprob=0.001, maxprob=0.20):
   simulator = EtheriscSimulator(data)
-  policy = simulator.underwrite()
-  print(policy)
+  
+  for _ in range(100):
+    policy = simulator.underwrite(payout)
+    print(policy)
+    
