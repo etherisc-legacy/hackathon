@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-12-03 16:24:30
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 23:58:00
+# @Last Modified time: 2016-12-08 21:07:37
 
 from random import randint
 from numpy import maximum
@@ -86,7 +86,7 @@ class EtheriscSimulator():
     """
     Get the average premium for the event at this index.
     """
-    return self.data['payout'].iloc[index] / 10
+    return self.data['payout'].iloc[index] * self.data['prob'].iloc[index]
 
   def __eventkey(self, index):
     """
@@ -133,12 +133,12 @@ class EtheriscSimulator():
 
     # find the premium
     premium = self.__getpremium(estimator, index)
-    print('collateral: ', self.collateral, 'C: ', estimator.C, 'premium: ', premium)
+    print('collateral: ', self.collateral, 'C: ', estimator.C, 'premium: ', premium, '\n')
     self.__changepremium(index, premium)
     self.collateral += premium
       
     print(estimator)
-    print(self.data[self.data['payout'] > 0])
+    print(self.data[self.data['payout'] > 0], '\n')
     
     # save the policy
     policy = Policy(id, eventkey, premium, payout)
@@ -150,13 +150,11 @@ class EtheriscSimulator():
 
   def __getpremium(self, estimator, index):
     
-    avgpremium = self.__getavgpremium(index)
-    
     # if we are overcollateralized, just
     # give them the average premium for this
     # event
     if estimator.C <= self.collateral:
-      return avgpremium
+      return self.__getavgpremium(index)
 
     # get the excess
     return estimator.C - self.collateral

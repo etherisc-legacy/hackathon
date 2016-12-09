@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-08 20:34:16
+# @Last Modified time: 2016-12-08 21:04:56
 
 from scipy.stats import norm, uniform
 from etherisc.variable import EtheriscEstimator
@@ -63,7 +63,7 @@ def __loaddata(filename, datatype='flightcsv', minprob=0.001, maxprob=0.20):
 
 def simulate(filename, datatype='flightcsv', payout=500, minprob=0.001, maxprob=0.20, auxcapital=20000):
   data = __loaddata(filename, datatype=datatype, minprob=minprob, maxprob=maxprob)
-  __simulate(data, payout=payout, minprob=minprob, maxprob=maxprob)
+  __simulate(data, payout=payout, minprob=minprob, maxprob=maxprob, auxcapital=auxcapital)
 
 def __simulate(data, payout=500, minprob=0.001, maxprob=0.20, auxcapital=20000):
   simulator = EtheriscSimulator(data, auxcapital=auxcapital)

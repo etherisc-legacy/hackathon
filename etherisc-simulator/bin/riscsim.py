@@ -4,7 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-08 20:35:39
+# @Last Modified time: 2016-12-08 21:04:08
 
 """
 riscsim.py
@@ -72,5 +72,6 @@ if __name__ == '__main__':
   Read the command line arguments.
   """
   args = docopt(__doc__)
+  print(args)
   __settings()
   main(args)
