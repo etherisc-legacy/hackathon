@@ -4,7 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 19:49:02
+# @Last Modified time: 2016-12-08 20:35:39
 
 """
 riscsim.py
@@ -13,7 +13,7 @@ Etherisc decentralized insurance model simulator.
 Usage:
   riscsim.py estimaterandom [-n N] [-p PAYOUT]
   riscsim.py estimatedata FILENAME [-p PAYOUT] [-r SAMPLESIZE] [--minprob MINPROB] [--maxprob MAXPROB]
-  riscsim.py simulate FILENAME [-p PAYOUT] [--minprob MINPROB] [--maxprob MAXPROB]
+  riscsim.py simulate FILENAME [-p PAYOUT] [--minprob MINPROB] [--maxprob MAXPROB] [--auxcapital AUXCAP]
 
 Options:
   -n, --events N             the number of insurable events [default: 10]
@@ -21,6 +21,7 @@ Options:
   -r, --random SAMPLESIZE    select a random sample of events [default: 0]
   -m, --minprob MINPROB      set the minimum event probability we're willing to underwrite [default: 0.001]
   -M, --maxprob MAXPROB      set the maximum event probability we're willing to underwrite [default: 0.20]
+  -c, --auxcapital AUXCAP    set the initial capital seeded to the insurance contract [default: 0.0]
 """
 
 from docopt import docopt
@@ -37,6 +38,7 @@ def main(args):
   samplesize    = int(args['--random'])
   minprob       = float(args['--minprob'])
   maxprob       = float(args['--maxprob'])
+  auxcapital    = float(args['--auxcapital'])
 
   if args['estimaterandom']:
     """
@@ -55,7 +57,7 @@ def main(args):
     """
     Simulate Etherisc.
     """
-    simulate(args['FILENAME'], payout=payout, maxprob=maxprob, minprob=minprob)
+    simulate(args['FILENAME'], payout=payout, maxprob=maxprob, minprob=minprob, auxcapital=auxcapital)
 
 
 def __settings():
