@@ -2,10 +2,10 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 21:43:43
+# @Last Modified time: 2016-12-03 23:53:52
 
 from scipy.stats import norm, uniform
-from etherisc.variable import VariableEstimator
+from etherisc.variable import EtheriscEstimator
 from etherisc.data import extract_flight_csv
 from etherisc.simulation import EtheriscSimulator
 
@@ -43,14 +43,11 @@ def __estimatedata(data, payout=500, randomsample=0):
   """
   if randomsample > 0:
     data = data.sample(randomsample)
-  
-  # get the model parameters
-  probs = data['prob']
-  payouts = [payout] * len(probs)
-  labels = list(data.index)
 
+  # get the model parameters
+ 
   # estimate
-  estimator = VariableEstimator(ps=probs, Ps=payouts, labels=labels)
+  estimator = EtheriscEstimator(data)
   return estimator
 
 
@@ -69,7 +66,7 @@ def simulate(filename, datatype='flightcsv', payout=500, minprob=0.001, maxprob=
   __simulate(data, payout=payout, minprob=minprob, maxprob=maxprob)
 
 def __simulate(data, payout=500, minprob=0.001, maxprob=0.20):
-  simulator = EtheriscSimulator(data)
+  simulator = EtheriscSimulator(data, auxcapital=20000)
   
   for _ in range(100):
     policy = simulator.underwrite(payout)
