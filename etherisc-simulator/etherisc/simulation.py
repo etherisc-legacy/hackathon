@@ -2,11 +2,11 @@
 # @Author: Jake Brukhman
 # @Date:   2016-12-03 16:24:30
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 19:45:00
+# @Last Modified time: 2016-12-03 23:58:00
 
 from random import randint
 from numpy import maximum
-from etherisc.variable import VariableEstimator
+from etherisc.variable import EtheriscEstimator
 
 import numpy as np
 
@@ -38,6 +38,8 @@ class Policy():
     """
     return "{%d/%s: $%0.2f @ $%0.2f / %s}" % (self.id, self.eventkey, self.payout, self.premium, self.status)
 
+
+
 class EtheriscSimulator():
 
   def __init__(self, data, auxcapital=0.0):
@@ -48,13 +50,59 @@ class EtheriscSimulator():
     """
     self.data = data          # all insuranble events
     self.policies = {}
-    self.collateral = 0.0
-    self.auxcapital = 0.0
+    self.collateral = auxcapital
 
     # add a column for payouts to the data
-    self.data['payouts'] = 0.0
+    self.data['premium'] = 0.0
+    self.data['payout'] = 0.0
     self.data['policies'] = 0
-    self.ids = 0
+
+    # counter
+    self.counter = 0
+
+
+  def __changepayout(self, index, payoutdelta):
+    """
+    Add or subtract a payout amount from the portfolio event
+    indexed at `index`.
+    """
+    self.data['payout'].iloc[index] += payoutdelta
+
+  def __changepolicycount(self, index, policiesdelta):
+    """
+    Add or subtract a policy count from the portfolio event
+    indexed at `index`.
+    """
+    self.data['policies'].iloc[index] += policiesdelta
+
+  def __changepremium(self, index, premiumdelta):
+    """
+    Add or subtract premium information from the portfolio event
+    indexed at `index`.
+    """
+    self.data['premium'].iloc[index] += premiumdelta
+
+  def __getavgpremium(self, index):
+    """
+    Get the average premium for the event at this index.
+    """
+    return self.data['payout'].iloc[index] / 10
+
+  def __eventkey(self, index):
+    """
+    Return the name of the event at `index`.
+    """
+    return self.data.index[index]
+
+  def __recalcr(self):
+    self.data['r'] = self.data['payout'] / self.data['premium']
+
+  def __id(self):
+    """
+    Return a unique id.
+    """
+    self.counter += 1
+    return self.counter
 
   def underwrite(self, payout, index=None):
     """
@@ -70,50 +118,46 @@ class EtheriscSimulator():
       index = randint(0, len(self.data) - 1)
     
     # get the event key and policy id
-    eventkey = self.data.iloc[index].name
-    id = self.ids
-    self.ids += 1
+    eventkey = self.__eventkey(index)
+    id       = self.__id()
 
     # set the payout
-    self.data['payouts'][index] = self.data['payouts'][index] + payout
+    self.__changepayout(index, payout)
 
     # count the number of policies
-    self.data['policies'][index] = self.data['policies'][index] + 1
-
-    # get the active event/payouts data
-    data = self.data[self.data['payouts'] > 0]
+    self.__changepolicycount(index, 1)
 
     # estimate the model on the current data
-    estimator = VariableEstimator(ps=data['probs'], Ps=data['payouts'], labels=list(data.index))
+    estimator = EtheriscEstimator(self.data)
+    estimator.estimate()
 
     # find the premium
-    premium = self.__getpremium(estimator, eventkey)
+    premium = self.__getpremium(estimator, index)
+    print('collateral: ', self.collateral, 'C: ', estimator.C, 'premium: ', premium)
+    self.__changepremium(index, premium)
+    self.collateral += premium
       
     print(estimator)
+    print(self.data[self.data['payout'] > 0])
     
     # save the policy
     policy = Policy(id, eventkey, premium, payout)
     self.policies[id] = policy
 
-    # add to collateral pool
-    self.collateral += premium
-    print('collat: ', self.collateral)
+    self.__recalcr()
 
     return policy
 
-  def __getpremium(self, estimator, eventkey):
-    numpolicies = self.data['policies'].loc[eventkey]
-    avgpremium  = estimator.df['premiums'].loc[eventkey] / numpolicies
-    excess = estimator.C - self.collateral
-    if excess < 0:
+  def __getpremium(self, estimator, index):
+    
+    avgpremium = self.__getavgpremium(index)
+    
+    # if we are overcollateralized, just
+    # give them the average premium for this
+    # event
+    if estimator.C <= self.collateral:
       return avgpremium
-    return max(excess, avgpremium)
 
-  def expire(self, policy, claim=False):
-    policy.expire(claim)
-    self.data['payouts'].loc[policy.eventkey] -= policy.payout
-    self.data['policies'].loc[policy.eventkey] -= 1
-    if claim:
-      self.collateral -= policy.payout
-    self.policies.pop(policy.id)
-    return policy
+    # get the excess
+    return estimator.C - self.collateral
+

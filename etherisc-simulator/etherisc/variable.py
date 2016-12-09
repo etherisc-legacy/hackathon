@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 19:02:27
+# @Last Modified time: 2016-12-03 23:44:58
 
 import numpy as np
 import pandas as pd
@@ -10,61 +10,28 @@ import pandas as pd
 from scipy.stats import binom
 from scipy.stats.mstats import mquantiles
 
-class VariableEstimator():
-  """
-  An insurance model estimator for a model with
-  variable payouts and event probabilities, as
-  described here: 
 
-  https://www.sharelatex.com/project/582f437341592a79643495e3
-  """
-  def __init__(self, ps, Ps, labels=None, pi=.9999, N=100000):
+class EtheriscEstimator():
+
+  def __init__(self, data, pi=.9999, N=100000):
     """
-    Inputs:
+    Initialize an Etherisc estimator.
 
-      ps             a vector of event probabilities
-      Ps             a vector of desired payouts
-      pi             desired confidence level
-      N              iterations for Monte Carlo simulation
-
-    Outputs:
-      
-      C              required capitalization
-      L              total liability
-      Pr             a vector of corresponding premiums
-      r              return multiple
+      data          a pandas.DataFrame with 'prob' and 'payout' columns
+      pi            desired confidence level of portfolio solvency
+      N             number of Monte Carlo iterations to perform during
+                    estimations
     """
+    self.data = data
+    self.pi   = pi
+    self.N    = N
 
-    # set the input parameters
-    self.ps  = np.array(ps)      
-    self.Ps  = np.array(Ps)       
-    self.pi  = pi                 
-    self.N   = N
+  def estimate(self):
+    # get the event prob and payout vectors
+    self.ps = np.array(self.data['prob'])
+    self.Ps = np.array(self.data['payout'])
 
-    # set the labels
-    if not labels:
-      self.labels = range(len(ps))
-    else:
-      self.labels = labels
-
-    # consistency check
-    if len(ps) != len(Ps):
-      raise Exception('len(p) != len(Ps)')
-    if len(self.labels) != len(ps):
-      raise Exception('len(p) != len(labels)')
-
-    # calculate the model outputs
-    self.__calculate()
-
-  def __calculate(self):
-    """
-    Calculate the model outputs based on the input parameters.
-    """
-
-    # number of insurable events
-    self.n  = len(self.ps)
-
-    # payout liability mean and stdev
+     # payout liability mean and stdev
     self.mu = np.sum(self.ps * self.Ps)
     self.sd = np.sqrt(np.sum(self.Ps**2 * (1 - self.ps) * self.ps))
 
@@ -76,33 +43,17 @@ class VariableEstimator():
     samples = np.array(self.Ps * m)
     self.C = mquantiles(samples, prob=[self.pi], alphap=1, betap=1) # Type 7
 
-    # calculate the premiums
     self.Pr = (self.ps * self.Ps) / (np.sum(self.ps * self.Ps)) * self.C
 
     # return multiple
     self.r  = self.L / self.C
+    self.c  = self.C / self.L
 
     # revenue
     self.R  = self.C - self.mu
-    self.outputs() # cache the outputs
-
-  def outputs(self):
-    if hasattr(self, 'df'):
-      return self.df
-
-    self.df = pd.concat([
-      pd.DataFrame(self.ps), 
-      pd.DataFrame(self.Pr), 
-      pd.DataFrame(self.Ps)], 
-      axis=1)
-    self.df.index = self.labels
-    self.df.columns = ['probs', 'premiums', 'payouts']
-    self.df['r'] = self.df['payouts'] / self.df['premiums']
-    return self.df
 
   def __str__(self):
     return """
-      model:\n\n%s\n
       n:   %d
       mu:  %0.2f
       sd:  %0.2f
@@ -111,4 +62,4 @@ class VariableEstimator():
       %%:   %0.2f
       r:   %0.2f
       R:   $%0.2f
-    """ % (self.outputs(), self.n, self.mu, self.sd, self.L, self.C, self.C / self.L * 100, self.r, self.R)
+    """ % (len(self.data), self.mu, self.sd, self.L, self.C, self.c * 100, self.r, self.R)
