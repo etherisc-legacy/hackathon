@@ -2,32 +2,22 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-08 21:04:56
+# @Last Modified time: 2016-12-09 21:21:53
 
 from scipy.stats import norm, uniform
 from etherisc.variable import EtheriscEstimator
 from etherisc.data import extract_flight_csv
 from etherisc.simulation import EtheriscSimulator
 
-def estimaterandom(n=10, payout=500):
-  """
-  Print an estimate for the Etherisc credit model.
-  """
-  ps = uniform.rvs(size=n) / 10
-  Ps = abs(norm.rvs(loc=payout, scale=50, size=n))
-
-  estimator = VariableEstimator(ps=ps, Ps=Ps)
-  print(estimator)
-
-
 def estimatedata(filename, datatype='flightcsv', payout=500, randomsample=0, minprob=0.001, maxprob=0.20):
   """
   Load actual data for model estimation.
   """
   data = __loaddata(filename, datatype=datatype, minprob=minprob, maxprob=maxprob)
-  estimator = __estimatedata(data=data, payout=payout, 
+  estimator = __estimatedata(data, payout=payout, 
     randomsample=randomsample)
   print(estimator)
+  print(data)
 
 
 def __estimatedata(data, payout=500, randomsample=0):
@@ -44,10 +34,14 @@ def __estimatedata(data, payout=500, randomsample=0):
   if randomsample > 0:
     data = data.sample(randomsample)
 
+  data['premium'] = 0.0
+  data['payout'] = payout
+
   # get the model parameters
  
   # estimate
   estimator = EtheriscEstimator(data)
+  estimator.estimate()
   return estimator
 
 
