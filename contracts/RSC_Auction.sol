@@ -184,12 +184,13 @@ contract RSC_Auction {
     }
 
     /**
-     * Finish the auction.
+     * Finish the auction and set the initial token price.
      */
-    function endAuction()
+    function endAuction(_uint tokenPrice)
         private
     {
         auctionFinished = true;
+        tokenPrice = _tokenPrice;
     }
 
     /**
