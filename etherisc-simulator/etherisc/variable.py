@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-25 20:50:53
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-03 23:44:58
+# @Last Modified time: 2016-12-15 15:58:04
 
 import numpy as np
 import pandas as pd
@@ -43,7 +43,7 @@ class EtheriscEstimator():
     samples = np.array(self.Ps * m)
     self.C = mquantiles(samples, prob=[self.pi], alphap=1, betap=1) # Type 7
 
-    self.Pr = (self.ps * self.Ps) / (np.sum(self.ps * self.Ps)) * self.C
+    self.data['premium'] = (self.ps * self.Ps) / (np.sum(self.ps * self.Ps)) * self.C
 
     # return multiple
     self.r  = self.L / self.C

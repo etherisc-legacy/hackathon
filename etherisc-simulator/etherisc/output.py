@@ -2,7 +2,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 22:01:55
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-09 21:21:53
+# @Last Modified time: 2016-12-15 15:56:59
 
 from scipy.stats import norm, uniform
 from etherisc.variable import EtheriscEstimator
@@ -17,7 +17,7 @@ def estimatedata(filename, datatype='flightcsv', payout=500, randomsample=0, min
   estimator = __estimatedata(data, payout=payout, 
     randomsample=randomsample)
   print(estimator)
-  print(data)
+  print(estimator.data)
 
 
 def __estimatedata(data, payout=500, randomsample=0):
