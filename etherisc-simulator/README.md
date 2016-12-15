@@ -20,24 +20,19 @@ The simulator runs as a single command line program called `riscsim.py`, which c
 
     riscsim.py
     Etherisc decentralized insurance model simulator.
-
+    
     Usage:
-      riscsim.py estimaterandom [-n N] [-p PAYOUT]
       riscsim.py estimatedata FILENAME [-p PAYOUT] [-r SAMPLESIZE] [--minprob MINPROB] [--maxprob MAXPROB]
-
-
+      riscsim.py simulate FILENAME [-p PAYOUT] [--minprob MINPROB] [--maxprob MAXPROB] [--auxcapital AUXCAP]
+    
     Options:
-      -n, --events N             the number of insurable events [default: 10]
       -p, --payout PAYOUT        the average payout parameter [default: 500]
       -r, --random SAMPLESIZE    select a random sample of events [default: 0]
       -m, --minprob MINPROB      set the minimum event probability we're willing to underwrite [default: 0.001]
-      -M, --maxprob MAXPROB      set the maximum event probability we're willing to underwrite [default: 0.20]   
+      -M, --maxprob MAXPROB      set the maximum event probability we're willing to underwrite [default: 0.20]
+      -c, --auxcapital AUXCAP    set the initial capital seeded to the insurance contract [default: 0.0]
 
 ### Examples
-
-Simulate the Etherisc insurance model with randomly generated data:
-
-    riscsim.py estimaterandom --events 100 --payout 500
 
 Simulate the Etherisc insurance model with real flight delay data:
 
