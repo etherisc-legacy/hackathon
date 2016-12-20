@@ -4,7 +4,7 @@
 # @Author: Jake Brukhman
 # @Date:   2016-11-30 20:43:17
 # @Last Modified by:   Jake Brukhman
-# @Last Modified time: 2016-12-15 16:00:24
+# @Last Modified time: 2016-12-15 17:43:14
 
 """
 riscsim.py
@@ -26,6 +26,7 @@ from docopt import docopt
 from etherisc.output import estimatedata, simulate
 
 import numpy as np
+import pandas as pd
 
 def main(args):
   """
@@ -56,6 +57,7 @@ def __settings():
   Turn on default settings for the environment.
   """
   np.set_printoptions(precision=3, suppress=True)
+  pd.options.display.max_rows = 999
 
 
 if __name__ == '__main__':
