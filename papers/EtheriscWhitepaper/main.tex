@@ -7,6 +7,7 @@
 \usepackage[margin=1cm]{caption}
 \usepackage{titling}
 \usepackage{parskip}
+\usepackage{booktabs}
 
 \geometry{margin=.95in}
 \onehalfspacing
@@ -22,6 +23,7 @@
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 \usepackage{tocloft}
+\usepackage{cals}
 
 \pretitle{%
   \vspace{20mm}
@@ -32,10 +34,19 @@
 \posttitle{\end{center}}
 
 \begin{document}
+
 %
 % TITLE
 %
 \maketitle
+\newpage
+\begin{figure}[H]
+    \vspace{30mm}
+    \begin{center}
+        \includegraphics[scale=.15]{etheriscbeta}
+    \end{center}
+    \caption{\footnotesize Mockup for the Etherisc dashboard.}\label{fig1}
+\end{figure}
 \newpage
 
 %
@@ -64,7 +75,7 @@ Based on our research and experience with the Flight Delay Dapp, it is clear tha
 
 In this whitepaper, we propose an end-to-end decentralized insurance product and a reinsurance marketplace on the Ethereum blockchain as our contribution to hack.ether.camp. We present a token model which enables investors to buy and trade the “long-tail” risks of a decentralized insurance portfolio and to gain exposure to its revenue as an income stream. Together with a consumer-facing insurance application, this forms a complete and fully functioning “trustless” insurance system on the blockchain.
 
-Our strategy is to start with a simple use case. Flight delay insurance allows us to keep the complexity low and has some desirable properties. For instance, individual risks are relatively small, relatively independent, and claim verification can be fully automated. 
+Our strategy is to start with a simple use case and flight delay insurance is a natural candidate which has some desirable properties: individual risks are small and relatively independent and claim verification can be fully automated. 
 
 Our work with flight delay insurance will be a starting point to build upon and further expand into other insurance verticals and completely new insurance products. The prototype will provide the necessary building blocks to create the future of insurance on the blockchain.
 
@@ -96,7 +107,7 @@ Finally, we posit that the availability of insurance products via blockchain and
 
 \subsection{Scope}
 
-At Etherisc, we're aiming for a Minimum Loveable Product (MLP)\footnote{https://medium.com/the-happy-startup-school/} which consists of an automated smart contract for issuing and claiming insurance policies, an automated reinsurance market based on cryptographic tokens, a risk management economic model with transparent and aligned incentives for participants, and a great user experience. The details of the components of the Etherisc MLP may be found in the "Overview" section below.
+At Etherisc, we're aiming for a Minimum Loveable Product (MLP)\footnote{https://medium.com/the-happy-startup-school/} which consists of an automated smart contract for issuing and claiming insurance policies, an automated reinsurance market based on cryptographic tokens, a risk management economic model with transparent and aligned incentives for participants, and a great user experience. The details of the components of the Etherisc MLP may be found in Section \ref{architecture} section below.
 
 We will start our project with a simple model based on the Flight Delay Dapp. Flight delays are a natural use-case for parametric insurance\footnote{https://www.wikiwand.com/en/Parametric\_insurance}, that is, an insurance for which a damage and claim can be programmatically verified using a trusted data source. In this use case, the delay of each flight can be determined by requesting data from an online service, such as flightstats.com. The Flight Delay Dapp is a well-understood and thoroughly tested application which can issue policies and pay valid claims completely autonomously. Read more about our experience and lessons learned\footnote{https://medium.com/the-future-requires-more/flight-delay-dapp-lessons-learned-a59e4e39a8d1} from the Flight Delay Dapp experiment.
 
@@ -114,17 +125,87 @@ Part of the MLP will also be an intuitive, user-friendly frontend for both custo
 
 We aim to achieve the following milestones in the course of hack.ether.camp Virtual Accelerator:
 
-%% TODO Table
+\vspace{10mm}
 
-TODO TABLE
+\begin{center}
+\begin{calstable}
+\colwidths{{7cm}{7cm}}
+\large
+\brow 
+    \cell{\textbf{Milestone}} 
+    \cell{\textbf{Due Date/Period}} 
+\erow
+\normalsize
+\brow 
+    \cell{White paper draft version v0.1\\with first specification of risk pool and token model.}
+    \cell{Friday, 16 December 2016}
+\erow
+\brow 
+    \cell{White paper review and discussion}
+    \cell{Friday, 16 December 2016 to\\
+            Wednesday, 21 December 2016}
+\erow
+\brow 
+    \cell{First implementation of risk pool and token contract, release on testnet}
+    \cell{Tuesday, 20 December 2016}
+\erow
+
+\brow 
+    \cell{White paper v0.2+ with reviewed\\token model}
+    \cell{Thursday, 22 December 2016}
+\erow
+
+\brow 
+    \cell{Python simulation demonstrating\\statistical model calculation}
+    \cell{Thursday, 22 December 2016}
+\erow
+
+
+\end{calstable}
+\end{center}
 
 \subsection{Timeline For hack.ether.camp Funds}
 
 The hack.ether.camp DST contract defines the following timeline:
 
-%% TODO Table
+\vspace{10mm}
 
-TODO TABLE
+\begin{center}
+\begin{calstable}
+\colwidths{{7cm}{7cm}}
+\large
+\brow 
+    \cell{\textbf{Event}} 
+    \cell{\textbf{Date/Period (GMT)}} 
+\erow
+\normalsize
+\brow 
+    \cell{
+Start of the hackathon
+}
+    \cell{Thursday, 17 November 2016 14:00}
+\erow
+\brow 
+    \cell{End of the hackathon; token sale for HKG ends; up to 5X sold tokens issued and offered for ETH.}
+    \cell{Thursday, 22 December 2016 14:00}
+\erow
+\brow 
+    \cell{First proposal can be submitted 8\\weeks after the event ends}
+    \cell{Thursday, 16 February 2017 14:00}
+\erow
+
+\brow 
+    \cell{Objection period ends after 	10 days, 20\% of funds can be released}
+    \cell{Sunday, 26 February 2017 14:00}
+\erow
+
+\brow 
+    \cell{One proposal for 20\% of funds every 2 weeks}
+    \cell{Thursday, 2 March 2017 to\\Thursday, 13 April 2017}
+\erow
+\end{calstable}
+\end{center}
+
 
 \subsection{General Cost Estimates}
 
@@ -135,21 +216,129 @@ The Etherisc team estimates the following costs for the initial development of a
 
     \item \textbf{Development.} This will include software development, smart contract development and security review, and developing user experience.
 
-    \item \textbf{External Costs.} These will include token sale structure, security audits, legal advisory, bug bounties, and other fixed costs associated with technology and development.
+    \item \textbf{External Costs.} These will include token sale structure, security audits, legal advisory, bug bounties, and other fixed costs associated with product development.
 \end{itemize}
 
 The following table gives an overview of expected costs and an approximate breakdown of costs and deliverables according to different funding levels we hope to reach.
+\vspace{10mm}
+\begin{center}
 
-%% TODO Table
-TODO TABLE
+\begin{figure}[H]
+\centering
+\textbf{Cost Estimates}\par\vspace{10mm}
+\begin{calstable}
+\colwidths{{4cm}{4.33cm}{4.33cm}{4.33cm}}
+\large
+\alignC
+\brow 
+    \cell{\textbf{Funding\vspace{3mm}}} 
+    \cell{\textbf{Research}}
+    \cell{\textbf{Development}}
+    \cell{\textbf{Other}}
+\erow
+\alignL
+\footnotesize
+\brow 
+    \cell{\textbf{\$12,500}}
+    \cell{\$5,000}
+    \cell{\$5,000}
+    \cell{\$2,500}
+\erow
+\brow 
+    \cell{\textit{(Current financing:\\approx. \$20,000)}}
+    \cell{
+        Build a simulator for Flight Delay;\\
+        Acquire external data for FlightDelay;\\
+        Run basic simulations
+    }
+    \cell{
+    Build a simple demonstrator (frontend/backend);\\
+    Deploy on testnet not ready for production
+    }
+    \cell{
+        Basic audit on the mathematical model\\
+        Prepare token sale
+    }
+\erow
+\brow 
+    \cell{\textbf{\$30,000}}
+    \cell{\$10,000}
+    \cell{\$15,000}
+    \cell{\$5,000}
+\erow
+\brow 
+    \cell{}
+    \cell{
+        Develop a concept for continuous validation & backtesting of system
+    }
+    \cell{
+        Build a functional and complete DApp, simple UI;\\
+        Backend with contracts \& investor side
+    }
+    \cell{
+        As above
+    }
+\erow
+
+\brow 
+    \cell{\textbf{\$70,000}}
+    \cell{\$20,000}
+    \cell{\$30,000}
+    \cell{\$20,000}
+\erow
+
+\brow 
+    \cell{}
+    \cell{
+    Extend mathematical\\model;\\
+    Include correlation and\\further data sources, such as weather \& airport data
+    }
+    \cell{
+        MLP;\\
+        Build a great UX/UI;\\
+        Small scale deployment\\ possible
+    }
+    \cell{
+        Legal and regulatory\\framework;\\
+        Campaign for token sale;\\
+        Legal audit for token sale
+    }
+\erow
+
+\brow 
+    \cell{\textbf{\$100,000}}
+    \cell{\$30,000}
+    \cell{\$40,000}
+    \cell{\$30,000}
+\erow
+
+\brow 
+    \cell{}
+    \cell{
+        Finished model
+    }
+    \cell{
+        MLP;\\
+        Testing and refined UX/UI;\\
+        Production ready for larger scale
+    }
+    \cell{
+        Thorough audit on mathematical and actuarial model;\\
+        Security audits and bug bounties
+    }
+\erow
+\end{calstable}
+    \caption{\footnotesize Funding versus plausible development.}\label{fig1}
+\end{figure}
+
+\end{center}
+
+
 
 \subsection{Proposal for hack.ether.camp funds}
 
-As of December 19th, the Etherisc camp has raised approximately 305K HKG, with a current market value of approximately \$20,000. There are currently 53 backers of our project, who are RSC-DST token holders and hold preferred voting rights to direct the use of hackathon tokens.\footnote{https://live.ether.camp/account/833882e76f4967b9b18f52d70640bfcc82aa91e9}
+As of December 19th, the Etherisc camp has raised approximately 305K HKG, with a current market value of approximately \$20,000. There are currently 53 backers of our project, who are RSC-DST token holders and hold preferred voting rights to direct the use of hackathon tokens.\footnote{https://live.ether.camp/account/833882e76f4967b9b18f52d70640bfcc82aa91e9} The RSC token distribution is also available.\footnote{http://bit.ly/2hUPGrM}
 
-\begin{center}
-  \includegraphics[scale=.75]{distribution}
-\end{center}
 
 We not only want financial support for development, we also want RSC-DST holders to promote and govern the project, work with us as advisors and reviewers on specification and fine-tuning of the model and the mechanics of the token sale. We want you to test our implementation and as early users. If you are in the position, please help us communicate with regulators and find opportunities to engage with established insurance.
 
@@ -159,9 +348,9 @@ If Etherisc raises in excess of this goal, we propose to use 20\% of the digital
 
 Regardless of the outcome of the hackathon, the Etherisc team is committed to working on the project, seeking additional sources of funding if required. 
 
-In a future token sale, we will compensate the founding team and early contributors (~10\%), and will mainly (~90\%) fill the first excessive risk pool in exchange for RSC-FDD, the risk pool tokens which provide a fixed income for token holders.
+In a future token sale, we will compensate the founding team and early contributors using an allocation of 10\%, and the remaining funds will be used to fill the first reinsurance pool in exchange for RSC-FDD, the risk pool tokens which provide a fixed income for token holders.\footnote{These allocations are subject to change.}
 
-\subsubsection{Open Questions}
+\subsubsection{Open Questions [Under Review]}
 
 \begin{enumerate}
     \item What exactly will be the offer for early investors (= RSC-DST holders)? 
@@ -179,22 +368,22 @@ Insurance is a highly-regulated business. We have three strategies for complianc
     \item We could partner with a larger company that is in full compliance with its jurisdiction as a software service provider. We are in ongoing discussions with several large insurance companies in the UK, Germany, and Asia.
 \end{enumerate}
 
-Also see Appendix D: General Regulatory Considerations. \textbf{TODO Add labels}
+Also see Appendix \ref{regulatory} for details.
 
 \subsection{Defensibility}
 
 In a decentralized economy, business models will not be based on a technological edge or on informational advantages. In this space, competitors are on a level playing field as their technology stack is fully open source and all data going to smart contracts is publicly auditable. The remaining factors to differentiate are user experience, viability, liquidity, and governance.
 
-We will differentiate ourselves from others with a great user experience for customers and investors. We also aim to excel with a well balanced governance model for investors, partners and team members. This and being an early or first mover will attract the necessary liquidity for providing a reliable service.
+We will differentiate ourselves from others with a great user experience for customers and investors. We also aim to excel with a well balanced governance model for investors, partners, and team members. Being an early or first mover will attract the necessary liquidity for providing a reliable service.
 
-In order to stay defensible we need to stay ahead of the curve, constantly innovate and adapt to changes. As soon as we fall behind, lose interest or fail to deliver, others are free to take up our work and continue, which is a good thing for the community.
+In order to stay defensible we need to stay ahead of the curve, constantly innovate, and adapt to changes. As soon as we fall behind, lose interest or fail to deliver, others will be free to take up our open source work and continue, underscoring that Etherisc is ultimately a community effort.
 
 \subsection{Future Directions}
 
 After the successful launch of the Etherisc Minimum Loveable Product, we will move to address further development directions. In particular, we want to strategically address the following areas:
 
 \begin{enumerate}
-    \item \textbf{Additional Verticals.} We expect to extend Etherisc to other parametric and non-parametric insurance verticals in the future including crop and weather insurance, life and health insurance, and others. See section XYZ for likely candidates.
+    \item \textbf{Additional Verticals.} We expect to extend Etherisc to other parametric and non-parametric insurance verticals in the future including crop and weather insurance, life and health insurance, and others.
     \item \textbf{Stable Currency.} Integrate a stable cryptocurrency to reduce volatility risks in policy issuance and payouts. A stable unit of account will also help to increase adoption in real-world use cases. Today, there are a number of "stablecoin" solutions being developed.\footnote{A number of efforts are focusing on creating stable digital currencies including cashETH, DGX, DAI, and Decentralized Capital.}
     \item \textbf{Identity Solutions.} Integrate identity solutions on the blockchain (e.g. uPort\footnote{http://uport.me}, evernym\footnote{http://evernym.com}, BlockOne\footnote{https://blockone.thomsonreuters.com/}, OneName\footnote{http://onename.com}) to enable authentication with personal insurance applications (e.g. life insurance, health insurance). Identity is particularly important for integration of institutional and regulatory compliance.
     \item \textbf{Predictive Modeling.} Many forms of optimization are available in a given insurance vertical. For instance, in flight delay insurance, congestion at destination airports is highly correlated to congestion at departure airports, enabling risk optimization which can be performed even before a flight lands.\footnote{See correlation analyses in \textit{Analysis of aircraft arrival delay and airport on-time performance.} Yuqiong Bai. http://etd.fcla.edu/CF/CFE0001049/Bai\_Yuqiong\_200605\_MS.pdf}
@@ -203,7 +392,7 @@ After the successful launch of the Etherisc Minimum Loveable Product, we will mo
 %%
 %% ARCHITECTURE
 %%
-\section{Architecture}
+\section{Architecture \label{architecture}}
 
 The Etherisc team plans to build an end-to-end automated software platform for an insurance and reinsurance marketplace in a particular insurance vertical. For the vast majority of use cases this platform will require no human intervention, and will be highly transparent to both customer and investor sides of the marketplace.
 
@@ -229,7 +418,7 @@ Under normal operation, the reinsurance pool holds a non-zero amount of collater
 
 In turn, the risk pool automatically underwrites policies until this upper bound of policies is reached, and then ceases to underwrite policies. This is intended to ensure that every insurance policy is 100\% collateralized and no customer can lose a payout to which she is entitled. (If this upper bound is reached but there is further demand for policies, the system's maximum liability parameter can be adjusted higher, and the system will automatically issue and sell tokens to support new policies with minimal investor dilution.) Also note that a \$1M capitalization of the reinsurance pool will support a vastly larger throughput of policies than will likely be required in the early stages of the project.
 
-The deployed insurance model determines the minimal collateral reserve required to be held in the risk pool to support normal operation. Insurance premiums are calculated as a function of this required collateral, the insurable event in question, and the required payout for the policy at claim time. The exact calculation is specific to the model, but note that the risk pool is able to subsidize premiums by reserving excess collateral through a variety of means, such as seeding the pool with initial auxiliary capital or retaining revenue in the risk pool.
+To support normal operation, a minimal collateral reserve is required to be held in the risk pool, and this value is determined by the insurance model. Insurance premiums are calculated as a function of this required collateral, the insurable event in question, and the desired payout for the policy at claim time. The exact calculation is specific to the model, but note that the risk pool is able to subsidize premiums by reserving excess collateral through a variety of means, such as seeding the pool with initial auxiliary capital or retaining revenue in the risk pool.
 
 At the time a customer purchases a premium, a 5 to 10\% fixed fee will be assessed on the premium and allocated toward operational costs.
 
@@ -247,9 +436,10 @@ An event which depletes the reinsurance pool in this way results in a level of c
 
 This proposed economics has several desirable properties:
 
-Solvency Guarantees. No customer can lose money as insurance policies are underwritten against 100\% collateralization in the risk and reinsurance pools. No insurance policy will ever be issued that is not fully backed by collateral.
 
 \begin{enumerate}
+    \item \textbf{Solvency Guarantees.} No customer can lose money as insurance policies are underwritten against 100\% collateralization in the risk and reinsurance pools. No insurance policy will ever be issued that is not fully backed by collateral.
+
     \item \textbf{Natural Scalability.} If the demand for policies exceeds the available collateralization, the system has a natural mechanism to scale up to meet the desired demand through additional RSC-FDD token issuance. In the same way, it can naturally scale down to adjust to decreasing demand.
 
     \item \textbf{Fair Token Pricing.} The fair price of tokens is transparent, as it is the present perpetuity value of a measurable dividend stream which is itself well-defined by the probability model of the insurance portfolio. Given a reasonable risk-free rate and the observed recurring revenue stream of the risk pool, the price of tokens can estimated without resorting to speculative markets for pricing.
@@ -261,7 +451,12 @@ Solvency Guarantees. No customer can lose money as insurance policies are underw
 
 The following diagram outlines the components and value flows of the proposed system.
 
-\textbf{TODO diagram}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=.5]{etheriscflows}
+    \end{center}
+    \caption{\footnotesize General overview of components of flight delay-based Etherisc, risk pool, reinsurance pool, and capital flows.}\label{fig1}
+\end{figure}
 
 \subsection{Risk Management for Flight Delay Insurance}
 
@@ -276,8 +471,52 @@ Providing a risk pool at such a high level of confidence comes at a cost. Invest
 \subsection{Risk Model Target Parameters}
 
 Investors will ask for the key parameters of our model, therefore we provide some estimates which we will elaborate more precisely in the future. Note that all values are subject to change.
+\vspace{10mm}
+\begin{center}
+\begin{calstable}
+\colwidths{{7cm}{7cm}}
+\large
+\brow 
+    \cell{\textbf{Parameter}} 
+    \cell{\textbf{Estimate}} 
+\erow
+\normalsize
+\brow 
+    \cell{
+Risk pool solvency confidence level
+}
+    \cell{99.99\%}
+\erow
+\brow 
+    \cell{
+Fixed service fee on premiums
+}
+    \cell{5 - 10\%}
+\erow
+\brow 
+    \cell{
+Target return rate on reinsurance pool
+}
+    \cell{5 - 10\%}
+\erow
 
-\textbf{TODO table}
+\brow 
+    \cell{
+Target maximum liability at launch	
+}
+    \cell{\$1,000,000}
+\erow
+
+\brow 
+    \cell{
+Target policy throughput
+}
+    \cell{2000 concurrent policies at\\\$500 average payout}
+\erow
+\end{calstable}
+\end{center}
+
+
 
 \subsection{Proposed Token Model}
 
@@ -307,7 +546,7 @@ Stephan\footnote{https://twitter.com/kpi; https://at.linkedin.com/in/karpischek}
  
 \subsubsection{Jake Brukhman}
 
-Jake\footnote{http://brukhman.com} is Co-Founder and Managing Partner at CoinFund LLC\footnote{http://coinfund.io}, a blockchain technology research company and private cryptoasset investment vehicle. As part of CoinFund, Jake has studied and interfaced with a large portion of the public blockchain startup space and has been an advisor to multiple blockchain startups. He has 9 years of experience in pure and financial technology and an avid interest in blockchain and fintech. Previously, Jake was Partner \& CTO at Triton Research, a technical product manager and engineer at Amazon.com, and spent five years as a financial technologist at Highbridge Capital Management and as a quantitative researcher and trader at Kohera. Jake studied computer science and mathematics at Rutgers University, New Brunswick and the Courant Institute of Mathematical Sciences at NYU.
+Jake\footnote{http://brukhman.com} is Co-Founder and Managing Partner at CoinFund,\footnote{http://coinfund.io} a blockchain technology research company and private cryptoasset investor. As part of CoinFund, Jake has studied and interfaced with a significant portion of the public blockchain startup space and has been an advisor to multiple blockchain startups. He has 9 years of experience in pure and financial technology and an avid interest in blockchain and fintech. Previously, Jake was Partner \& CTO at Triton Research, a technical product manager and engineer at Amazon.com, and spent five years as a financial technologist at Highbridge Capital Management and as a quantitative researcher and trader at Kohera. Jake studied computer science and mathematics at Rutgers University, New Brunswick and the Courant Institute of Mathematical Sciences at NYU.
 
 \subsubsection{Nuno Brito Lopes}
 
@@ -484,10 +723,9 @@ The core complexity of the model estimation algorithm is the non-triviality of t
 
 \subsubsection{Python simulation}
 
-The model described above is implemented as a Python simulation. Please see:\\
-
+The model described above is implemented as a Python simulation. Please see:
 \begin{verbatim}
-    \text{https://github.com/etherisc/hackathon/tree/master/etherisc-simulator}
+    https://github.com/etherisc/hackathon/tree/master/etherisc-simulator
 \end{verbatim}
 
 \subsubsection{Example outputs}
@@ -582,7 +820,73 @@ Because of the volume and interest in these new models, the intense scrutiny of 
 
 Etherisc is committed to providing complete transparency for its token offering and distribution methodology and to adhere to best practices being followed today by the blockchain community at large.
 
-\textbf{TODO}
+\subsection{Token Distribution Best Practices}
+
+\subsubsection{Prerequisites}
+
+\begin{enumerate}
+    
+    \item The token should have a defensible use case within the model or economics of the business.
+    \item The project must utilize open source software and publish the relevant code and documentation in advance of initial token distribution.
+\end{enumerate}
+
+\subsubsection{Information and Mechanics}
+
+\begin{enumerate}
+    \item The project must clearly communicate the token/equity structure including (1) the total (lifetime) supply of available tokens (including inflationary and/or deflationary factors); (2) the reasoning for the initial token allocation available for distribution, (3) the method of initial token distribution, 
+    and (4) the ability for future fungibility of the token.
+    
+    \item The project should cap the value of initial contributions based upon a demonstrated and budgeted need in relation to total available lifetime supply (i.e. traditionally known as “market cap”) AND considerate of the funding amount desired from the distribution derived from a detailed project plan and roadmap.
+    
+    \item There should be a logical relationship between project governance and pro rata token ownership. Governance criteria and methodology should be logical, inclusive, meaningful, and intuitive.
+    
+    \item The project should fully disclose the Founders, Advisors, and team allocation in advance of the distribution, and this allocation as a category should include some aspect of “vesting” of ownership over time for key personnel.
+
+    \item The project should utilize a “level-field” pricing mechanism and clearly communicate if earlier risk takers are compensated extra-ordinarily.
+    
+    \item There should be a definitive start and end date for the initial distribution phase with minimized economic incentive for early participation in this distribution phase (as business risks during this phase are all being assumed at essentially the same time).
+    
+    \item The project should provide an intuitive UI/UX for crowdsale participation, and attempt to maximize breadth of participation.
+
+    \item The project should utilize a non-proprietary blockchain for distribution and “proof” of distribution, with limited options for permitted “buy-in” currencies.
+
+
+    \item The project should establish and publish guidelines for the minimum amount of commitment required to undertake the token distribution as well as a process for the return of commitments upon failure to achieve minimum project thresholds.
+
+\end{enumerate}
+
+\subsubsection{References}
+
+\begin{enumerate}
+    \item Fred Ehrsam, Coinbase, August 2016.\footnote{https://blog.coinbase.com/app-coins-and-the-dawn-of-the-decentralized-business-model-8b8c951e734f#.wnj6cp2fp}
+
+    \item Demian Brener, Smart Contract Solutions, August 2016.\footnote{http://www.coindesk.com/tokens-crowdsales-startups/}
+
+    \item William Mougayar, November 2016 and earlier references.\footnote{http://startupmanagement.org/2016/11/24/how-to-evaluate-an-initial-cryptocurrency-offering-ico/}
+    
+    \item Zenel Batagelj, Iconomi, November 2016.\footnote{https://medium.com/iconominet/ico-2-0-what-is-the-ideal-ico-ee9d285a8939#.bhilra2dp}
+
+    \item General news, research and analysis of cryptoeconomics and ICO research from Smith + Crown.\footnote{https://www.smithandcrown.com/icos/}
+
+    \item Jake Brukhman, CoinFund, July 2016.\footnote{https://blog.coinfund.io/blockchain-investments-and-the-new-problem-asset-for-conventional-vcs-b65bfc7ca75}
+\end{enumerate}
+
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
 
 \section{Security and Formal Verification [Under Review]}
 
@@ -604,7 +908,7 @@ To illustrate this, we propose the following stack of abstraction:
 
 Of course, a complete chain of proof will be difficult and maybe a work of years. We will therefore start with proofs levels 1, 2, and 3, while proofs of levels 3, 4, and 5 will be a long-term project available to the whole community.
 
-\section{General Regulatory Considerations [Under Review]}
+\section{General Regulatory Considerations [Under Review] \label{regulatory}}
 
 Banking and insurance are among the  most regulated economic fields. Over-regulation  precludes many promising business models and introduces expensive frictions whose cost is ultimately transferred  to the end consumer.
 
@@ -630,81 +934,60 @@ Etherisc does not advise any party to enter into such an agreement; it is also n
 
 \subsection{Other decentralized insurance projects}
 
-InsurETH. (Thomas Bertani, Kristina Butkut, Francesco Canessa.) InsurETH was the winning project at the “Hack the Block” hackathon at London Fintech Week in late 2015. To our knowledge it was the first project to recognize the great fit for flight delays as an ideal use case for parametric insurance in a smart contract. 
+\textbf{InsurETH} (Thomas Bertani, Kristina Butkut, Francesco Canessa) InsurETH was the winning project at the “Hack the Block” hackathon at London Fintech Week in late 2015. To our knowledge it was the first project to recognize the great fit for flight delays as an ideal use case for parametric insurance in a smart contract. Thomas and the team at Oraclize have supported the Etherisc team from its inception. The Flight Delay Dapp uses Oraclize to channel flight data into the FDD smart contract. We are thankful and happy to have their support.
 
-Website: http://insureth.mkvd.net/
-Presentation slides: http://mkvd.s3.amazonaws.com/apps/InsurEth.pdf 
-Github repository: https://github.com/makevoid/insurETH_trains 
-
-Thomas and the team at Oraclize have supported the Etherisc team from its inception. The Flight Delay Dapp uses Oraclize to channel flight data into the FDD smart contract. We are thankful and happy to have their support.
-
-Dynamis. (Joshua Davis.) Joshua has shared his vision on peer-to-peer insurance on the blockchain and was an early inspiration for us to create decentralized insurance applications. At Etherisc we would love to see this vision of a peer-to-peer insurance marketplace become reality. We are working on it and are thankful for this groundbreaking work.
-
-Whitepaper: http://dynamisapp.com/whitepaper.pdf
-
-Inchain. Inchain has been among the first major projects to raise funds for a blockchain insurance application in a token sale. We were among the early supporters of their good idea and would have loved to see them succeed and develop insurance for crypto assets. Unfortunately, their funding goal was not reached. https://ico.inchain.io 
-
-In response to questions from investors, what makes Etherisc different:
-We can demonstrate a fully functional prototype of a parametric insurance, you can try our prototype at https://fdd.etherisc.com
-We have developed and published a risk model, which already works nicely in simulations, see Appendix A: Credit Risk Model.
+\begin{itemize}
+    \item Website: http://insureth.mkvd.net/
+    \item Presentation slides: http://mkvd.s3.amazonaws.com/apps/InsurEth.pdf
+    \item Github repository: https://github.com/makevoid/insurETH\_trains 
+\end{itemize}
 
 
-ChainThat 
-http://chainthat.com, http://www.the-digital-insurer.com/blog/insurtech-the-insurance-market-chainthat-21st-century-coffee-house-on-blockchain/
+\textbf{Dynamis} (Joshua Davis) Joshua has shared his vision on peer-to-peer insurance on the blockchain and was an early inspiration for us to create decentralized insurance applications. At Etherisc we would love to see this vision of a peer-to-peer insurance marketplace become reality. We are working on it and are thankful for this groundbreaking work.
 
+\begin{itemize}
+    \item Whitepaper: http://dynamisapp.com/whitepaper.pdf
+\end{itemize}
 
-BlockSure.
-https://blocksure.com
+\textbf{Inchain} Inchain has been among the first major projects to raise funds for a blockchain insurance application in a token sale. We were among the early supporters of their good idea and would have loved to see them succeed and develop insurance for crypto assets. Unfortunately, their funding goal was not reached. 
 
+In contrast to Inchain, we can demonstrate a fully functional prototype of a parametric insurance, you can try our prototype at https://fdd.etherisc.com. We have developed and published a risk model, which already works nicely in simulations, see Appendix A: Credit Risk Model.
 
-Town Crier Demo, 
-https://twitter.com/initc3org/status/758662838802083840
+\begin{itemize}
+    \item Website: https://ico.inchain.io 
+\end{itemize}
 
+\textbf{ChainThat}
 
-WeTrust
-http://wetrust.io
+\begin{itemize}
+    \item Website: http://chainthat.com
+    \item Press: http://www.the-digital-insurer.com/blog/insurtech-the-insurance-market-chainthat-21st-century-coffee-house-on-blockchain/
+\end{itemize}
 
+\textbf{BlockSure} https://blocksure.com
 
-BitPark
-https://bitpark.net
+\textbf{Town Crier Demo} https://twitter.com/initc3org/status/758662838802083840
 
-Insurance company R&D 
+\textbf{WeTrust} http://wetrust.io
 
+\textbf{BitPark} https://bitpark.net
 
-Allianz Catastrophe Bonds is testing three different blockchain technologies. http://www.coindesk.com/allianz-blockchain-smart-contracts-boost-catastrophe-bond-trading
+\subsection{Industry research \& development}
 
+\begin{itemize}
+    \item Allianz Catastrophe Bonds is testing three different blockchain technologies.\\ http://www.coindesk.com/allianz-blockchain-smart-contracts-boost-catastrophe-bond-trading
+    \item B3I initiative: Aegon, Allianz, Munich Re, Swiss Re and Zurich join forces to explore blockchain.\\https://www.munichre.com/en/media-relations/publications/company-news/2016/2016-10-19-company-news/index.html
+    \item http://www.zhongtuobang.com/site/blockchain
+    \item Michael Mainelli, Long Finance, Chain of a Lifetime.\\ http://www.longfinance.net/lf-research.html?id=903
+    \item Michael Mainelli and PwC, Chain Reaction\\ http://www.longfinance.net/lf-research.html?id=903
+    \item McKinsey report.\\ http://www.mckinsey.com/industries/financial-services/our-insights/blockchain-in-insurance-opportunity-or-threat
+    \item Deloitte, Blockchain in health and life insurance.\\ https://www2.deloitte.com/us/en/pages/life-sciences-and-health-care/articles/blockchain-in-insurance.html
+    \item "Analysis of aircraft arrival delay and airport on-time performance." Yuqiong Bai.\\ http://etd.fcla.edu/CF/CFE0001049/Bai\_Yuqiong\_200605\_MS.pdf
+    \item Collin Thompson.\\ https://medium.com/@collin\_thompson/insurance-the-blockchain-and-the-sharing-economy-re-imagining-insurancetech-with-p2p-social-8211e922fa79
+    \item David Siegel. Insurance on the Blockchain. In his article for the ConsenSys blog David coins the term “insure-bits” to describe the tokenization of risks. The following discussion about insurance on the blockchain in the 2030 blockchain business community brought together Stephan and Christoph to work on the Flight Delay Dapp and later form the founding team of Etherisc.\\https://media.consensys.net/2016/07/19/insurance-on-the-blockchain/\\https://medium.com/@pullnews/insurance-on-the-blockchain-eb06fe23730e
+    \item https://techcrunch.com/2016/10/29/blockchain-is-empowering-the-future-of-insurance/ 
+\end{itemize}
 
-B3I initiative: Aegon, Allianz, Munich Re, Swiss Re and Zurich join forces to explore blockchain https://www.munichre.com/en/media-relations/publications/company-news/2016/2016-10-19-company-news/index.html
-
-
-http://www.zhongtuobang.com/site/blockchain
-Industry studies
-
-
-Michael Mainelli, Long Finance, Chain of a Lifetime, http://www.longfinance.net/lf-research.html?id=903
-
-
-Michael Mainelli and PwC, Chain Reaction, http://www.longfinance.net/lf-research.html?id=903
-
-
-McKinsey report, http://www.mckinsey.com/industries/financial-services/our-insights/blockchain-in-insurance-opportunity-or-threat
-
-
-Deloitte, Blockchain in health and life insurance, https://www2.deloitte.com/us/en/pages/life-sciences-and-health-care/articles/blockchain-in-insurance.html
-
-
-"Analysis of aircraft arrival delay and airport on-time performance." Yuqiong Bai.
-http://etd.fcla.edu/CF/CFE0001049/Bai_Yuqiong_200605_MS.pdf
-
-Collin Thompson, https://medium.com/@collin_thompson/insurance-the-blockchain-and-the-sharing-economy-re-imagining-insurancetech-with-p2p-social-8211e922fa79
-
-
-David Siegel. Insurance on the Blockchain. In his article for the ConsenSys blog David coins the term “insure-bits” to describe the tokenization of risks. The following discussion about insurance on the blockchain in the 2030 blockchain business community brought together Stephan and Christoph to work on the Flight Delay Dapp and later form the founding team of Etherisc.
-https://media.consensys.net/2016/07/19/insurance-on-the-blockchain/ and
-https://medium.com/@pullnews/insurance-on-the-blockchain-eb06fe23730e
-
-
-https://techcrunch.com/2016/10/29/blockchain-is-empowering-the-future-of-insurance/ 
 
 
 
