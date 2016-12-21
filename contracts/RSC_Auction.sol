@@ -6,7 +6,7 @@
  */
 
 pragma solidity ^0.4.0;
-import "Tokens/AbstractToken.sol";
+import "AbstractToken.sol";
 
 contract RSC_Auction {
 

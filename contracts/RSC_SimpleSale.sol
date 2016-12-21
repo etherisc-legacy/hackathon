@@ -9,20 +9,10 @@
 
 pragma solidity ^0.4.0;
 
-// import "RSC_Token.sol";
+import "./RSC_Token.sol";
+import "./RSC_ControlledFund.sol";
 
-contract RSC_SimpleSale {
-
-    /**
-     * Restrict function call to owner.
-     */
-    modifier onlyOwner() {
-        if (msg.sender != owner) {
-            // Only owner is allowed to proceed
-            throw;
-        }
-        _;
-    }
+contract RSC_SimpleSale is RSC_ControlledFund {
 
     /**
      * Restrict function call to sale period.
@@ -48,12 +38,6 @@ contract RSC_SimpleSale {
      * Log every bid with investor, amount, chargeable
      */
     event Log_Sale(address indexed investor, uint256 amount);
-
-    /**
-     * Owner of the contract.
-     */
-    address public owner;
-
 
     /**
      * The underlying token.
@@ -83,7 +67,7 @@ contract RSC_SimpleSale {
      * The starting block. Anytime between end of January 2017 and March 2017.
      * @type {uint}
      */
-    uint constant public STARTBLOCK           =   3141592;
+    uint constant public STARTBLOCK           =   181000; // 3141592;
 
     /**
      * The total amount raised.
@@ -101,6 +85,13 @@ contract RSC_SimpleSale {
     bool public saleFinished;
 
     /**
+     * Constructor
+     */
+    function RSC_SimpleSale() {
+        owner = msg.sender;
+    }
+	
+    /**
      * The Sale function.
      */
     function tokenSale()
@@ -111,6 +102,7 @@ contract RSC_SimpleSale {
         uint amount = msg.value;
         if (saleFinished 
             || amount == 0 
+			|| tokenPrice == 0
             || block.number < STARTBLOCK 
             || block.number > STARTBLOCK + MAXIMUM_SALE_BLOCK) {
             // too early, too late, or no investment
@@ -125,7 +117,9 @@ contract RSC_SimpleSale {
         uint tokenCount = amount / tokenPrice;
         amount = tokenCount * tokenPrice;
         totalRaised += amount;
-
+		
+		// TODO: check for amount > 0 
+		
         // Send back any change
         amount = msg.value - amount;
         if (!msg.sender.send(amount)) {
@@ -146,8 +140,7 @@ contract RSC_SimpleSale {
      * Finish the auction and set the initial token price.
      */
     function endSale()
-        private
-    {
+        private {
         saleFinished = true;
     }
 
@@ -155,25 +148,23 @@ contract RSC_SimpleSale {
      * Set the Token contract.
      * @param _RSC_Token The token contract
      */
-    function setTokenContract(address _RSC_Token)
+    function setTokenContract(address _RSC_Token) 
         external
-        onlyOwner
-    {
+        onlyOwner {
         RSC_Token_Contract = RSC_Token(_RSC_Token);
     }
-
+	
     function setPrice(uint _tokenPrice) 
         external
-        onlyOwner
+        onlyRiskManager
         onlyAtSale {
         tokenPrice = _tokenPrice;
     }
 
-    /**
-     * Constructor
-     */
-    function RSC_SimpleSale() {
-        owner = msg.sender;
-    }
-
+	function setNewTotalSupply(uint _amount)
+		onlyRiskManager 
+		external {
+		RSC_Token_Contract.setNewTotalSupply(_amount);
+	}
+	
 }
