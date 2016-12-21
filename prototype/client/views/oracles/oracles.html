@@ -1,0 +1,209 @@
+<template name="Oracles">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Oracles
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> OraclesOraclesHowtoComponent}}{{> OraclesOracleTransactioninfoComponent}}
+	</div>
+</template>
+
+<template name="OraclesOraclesHowtoComponent">
+	<h4>
+		What's going on here?
+	</h4>
+	<p>
+		On this page, you can inpersonate the oracles which will eventually run autonomous.
+	</p>
+	<p>
+		The
+		<strong>
+			Underwriting oracle
+		</strong>
+		checks an applied policy and accepts or declines it.
+  If the oracle accepts the policy, it also calculates a probability of default - the probability that
+    the policy will be claimed in the course of a year.
+	</p>
+	<div class="underwrite_oracle_div">
+		{{> OraclesOraclesHowtoComponentUnderwriteOracleForm}}
+	</div>
+	<p>
+		The
+		<strong>
+			RiskManager oracle
+		</strong>
+		provides the RiskManager with statistical and economical input.
+  It collects the active policies, calculates the risk volume and determines the amount of risk capital needed.
+  If there is to little capital, the RiskManager triggers the sale of new tokens.
+	</p>
+	<div class="riskmanager_oracle_div">
+		{{> OraclesOraclesHowtoComponentRiskmanagerOracleForm}}
+	</div>
+</template>
+
+<template name="OraclesOraclesHowtoComponentUnderwriteOracleForm">
+	<div id="oracles-oracles-howto-component-underwrite-oracle-form" class="">
+		<h2 id="component-title">
+			Impersonate the Underwriting oracle
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-policy_id">
+				<label for="policy_id">
+					Policy Id
+				</label>
+				<div class="input-div">
+					<input type="text" name="policy_id" value="" class="form-control " autofocus="autofocus" required="required" data-type="integer">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-probability">
+				<label for="probability">
+					Probability of default (in %)
+				</label>
+				<div class="input-div">
+					<input type="text" name="probability" value="0.1" class="form-control " required="required" data-type="float" data-min="0.0" data-max="1.0">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-do_underwrite">
+				<label for="do_underwrite">
+					Action
+				</label>
+				<div class="input-div">
+					<select class="form-control " name="do_underwrite" data-type="bool" required="required">
+						<option value="true" selected>							Underwrite</option>
+						<option value="false">							Decline</option>
+					</select>
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Underwrite
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="OraclesOraclesHowtoComponentRiskmanagerOracleForm">
+	<div id="oracles-oracles-howto-component-riskmanager-oracle-form" class="">
+		<h2 id="component-title">
+			Impersonate the RiskManager oracle
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-riskmanager_param_1">
+				<label for="riskmanager_param_1">
+					Param 1
+				</label>
+				<div class="input-div">
+					<input type="text" name="riskmanager_param_1" value="" class="form-control " autofocus="autofocus" data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-riskmanager_param_2">
+				<label for="riskmanager_param_2">
+					Param 2
+				</label>
+				<div class="input-div">
+					<input type="text" name="riskmanager_param_2" value="" class="form-control " data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-riskmanager_param_3">
+				<label for="riskmanager_param_3">
+					Param 3
+				</label>
+				<div class="input-div">
+					<input type="text" name="riskmanager_param_3" value="" class="form-control " data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Set parameters
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="OraclesOracleTransactioninfoComponent">
+	{{#if showInfo}}
+    {{#if tx_Info 'success'}}
+	<p>
+		The transaction was successfull. You can check the transaction here:
+	</p>
+	<p>
+		<a href="https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}" target="_blank">
+			{{tx_Info 'hash'}}
+		</a>
+	</p>
+	<p>
+		Don't forget to click on "Convert to ASCII" ;-)
+	</p>
+	{{/if}}
+    {{#if tx_Info 'error'}}
+	<p>
+		An error has occured:
+		<span>
+			{{tx_Info 'error'}}
+		</span>
+	</p>
+	{{/if}}
+  {{/if}}
+</template>
+

@@ -1,0 +1,66 @@
+<template name="Statistics">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Statistics
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> StatisticsStatisticsHowtoComponent}}{{> StatisticsContractsDetailsComponent}}
+	</div>
+</template>
+
+<template name="StatisticsStatisticsHowtoComponent">
+	<h4>
+		Some title
+	</h4>
+	<p>
+		Some text
+	</p>
+</template>
+
+<template name="StatisticsContractsDetailsComponent">
+	<table class="table table-striped table-hover ">
+		<thead>
+			<tr>
+				<th>
+					Parameter
+				</th>
+				<th>
+					Value
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each contract_var_id in contract_var_ids}}
+			<tr>
+				<td>
+					{{contract_var_id}}
+				</td>
+				<td>
+					{{#if contract_var_id}}
+          	{{#if contract_var_ad contract_var_id}}
+					<a href="https://testnet.etherscan.io/address/{{contract_vars contract_var_id}}" target="_blank">
+						{{contract_vars contract_var_id}}
+					</a>
+					{{else}}
+          		{{contract_vars contract_var_id}}
+          	{{/if}}
+          {{else}}
+          	&nbsp;
+          {{/if}}
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	<button id="refreshVars" class="btn btn-success" type="submit">
+		<span class="fa fa-check">
+		</span>
+		Refresh
+	</button>
+</template>
+

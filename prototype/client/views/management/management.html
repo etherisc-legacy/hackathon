@@ -1,0 +1,164 @@
+<template name="Management">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Parameter Management
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> ManagementManagementHowtoComponent}}{{> ManagementManagementForm}}{{> ManagementManagementTransactioninfoComponent}}
+	</div>
+</template>
+
+<template name="ManagementManagementHowtoComponent">
+	<h4>
+		Some title
+	</h4>
+	<p>
+		Some text
+	</p>
+</template>
+
+<template name="ManagementManagementForm">
+	<div id="management-management-form" class="">
+		<h2 id="component-title">
+			Set parameters (please only one at a time)
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-token_owner_token">
+				<label for="token_owner_token">
+					Owner of RSC_Token
+				</label>
+				<div class="input-div">
+					<input type="text" name="token_owner_token" value="" class="form-control " autofocus="autofocus" data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-risk_manager_token">
+				<label for="risk_manager_token">
+					RiskManager for RSC_Token
+				</label>
+				<div class="input-div">
+					<input type="text" name="risk_manager_token" value="" class="form-control " data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-token_contract_simplesale">
+				<label for="token_contract_simplesale">
+					Token contract for RSC_SimpleSale
+				</label>
+				<div class="input-div">
+					<input type="text" name="token_contract_simplesale" value="" class="form-control " data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-token_price_simplesale">
+				<label for="token_price_simplesale">
+					Token Price in RSC_SimpleSale
+				</label>
+				<div class="input-div">
+					<input type="text" name="token_price_simplesale" value="" class="form-control " data-type="float" data-min="0.0000001" data-max="200.00">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-total_supply_simplesale">
+				<label for="total_supply_simplesale">
+					Total supply in RSC_Simplesale
+				</label>
+				<div class="input-div">
+					<input type="text" name="total_supply_simplesale" value="" class="form-control " data-type="integer" data-min="1" data-max="100000000">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-risk_manager_insurance">
+				<label for="risk_manager_insurance">
+					Risk Manager for RSC_Insurance
+				</label>
+				<div class="input-div">
+					<input type="text" name="risk_manager_insurance" value="" class="form-control " data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-oracle_insurance">
+				<label for="oracle_insurance">
+					Oracle for RSC_Insurance
+				</label>
+				<div class="input-div">
+					<input type="text" name="oracle_insurance" value="" class="form-control " data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Set Values
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="ManagementManagementTransactioninfoComponent">
+	{{#if showInfo}}
+    {{#if tx_Info 'success'}}
+	<p>
+		The transaction was successfull. You can check the transaction here:
+	</p>
+	<p>
+		<a href="https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}" target="_blank">
+			{{tx_Info 'hash'}}
+		</a>
+	</p>
+	<p>
+		Don't forget to click on "Convert to ASCII" ;-)
+	</p>
+	{{/if}}
+    {{#if tx_Info 'error'}}
+	<p>
+		An error has occured:
+		<span>
+			{{tx_Info 'error'}}
+		</span>
+	</p>
+	{{/if}}
+  {{/if}}
+</template>
+

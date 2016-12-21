@@ -1,0 +1,45 @@
+<template name="Home">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		<p id="page_text">
+			<h1>Welcome</h1>
+<p>This is the Etherisc demonstrator.</p>
+<p>With this demonstrator, we show how the decentralized insurance market will work, as described in our <a href="https://docs.google.com/document/d/16HAC-lw3MgHlVzdwUeWBaNOjTqW16GQ1MFWQD8sKMV8" target="_blank">White Paper</a></p>
+		</p>
+		{{> HomeCustomerJumbotron}}{{> HomeInvestorJumbotron}}
+	</div>
+</template>
+
+<template name="HomeCustomerJumbotron">
+	<div class="jumbotron ">
+		<div id="content" class="container">
+			<p id="jumbotron-text">
+			</p>
+			<p id="jumbotron-button">
+				<a href="#" class="btn btn btn-primary btn-lg" role="button">
+					Yeah, I'll apply for a policy!
+				</a>
+			</p>
+		</div>
+	</div>
+</template>
+
+<template name="HomeInvestorJumbotron">
+	<div class="jumbotron ">
+		<div id="content" class="container">
+			<p id="jumbotron-text">
+			</p>
+			<p id="jumbotron-button">
+				<a href="#" class="btn btn btn-primary btn-lg" role="button">
+					I'm an investor, where can I invest?
+				</a>
+			</p>
+		</div>
+	</div>
+</template>
+

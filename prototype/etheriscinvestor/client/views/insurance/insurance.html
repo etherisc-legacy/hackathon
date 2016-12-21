@@ -1,0 +1,139 @@
+<template name="Insurance">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Insurance
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> InsuranceInsuranceHowtoComponent}}{{> InsuranceNewpolicyForm}}{{> InsuranceNewpolicyTransactioninfoComponent}}
+	</div>
+</template>
+
+<template name="InsuranceInsuranceHowtoComponent">
+	<h4>
+		What's happening here?
+	</h4>
+	<p>
+		To demonstrate the investor backend, we need a minimalistic insurance. 
+    This simple FlightDelayInsurance is much simpler than the original
+		<a href="https://fdd.etherisc.com">
+			Flight Delay DApp
+		</a>
+		,
+    but actually is very similar: It has a function
+		<code>
+newPolicy()
+		</code>
+		and a function
+		<code>
+underwrite()
+		</code>
+		.
+		<code>
+newPolicy()
+		</code>
+		is called by the customer. After that, an oracle estimates the probability of default and 
+    underwrites or declines the policy with a call to
+		<code>
+underwrite()
+		</code>
+		. In this prototype, the oracle function can be 
+    called manually. See the menu
+		<a href="https://dashboard-staging.etherisc.com/oracles">
+			Oracles
+		</a>
+		above.
+	</p>
+</template>
+
+<template name="InsuranceNewpolicyForm">
+	<div id="insurance-newpolicy-form" class="">
+		<h2 id="component-title">
+			Apply for Policy
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-risk_description">
+				<label for="risk_description">
+					Risk (Flight Number / Origin-Destination / Date)
+				</label>
+				<div class="input-div">
+					<select class="form-control " name="risk_description" data-type="string" required="required" autofocus="autofocus">
+						<option value="/LH-410/2016-12-23" selected>							LH 410 MUC-JFK 2016-12-3</option>
+						<option value="/F9-418/2016-12-23">							F9-418 DEN-ATL 2016-12-23</option>
+						<option value="/CA-828/2016-12-23">							CA-828 MUC-PVG 2016-12-23</option>
+					</select>
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-premium">
+				<label for="premium">
+					Premium
+				</label>
+				<div class="input-div">
+					<input type="text" name="premium" value="2.0" class="form-control " required="required" data-type="float" data-min="0.5" data-max="50.0">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Apply!
+					</button>
+					<a href="#" id="form-cancel-button" class="btn btn-default">
+						Cancel
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="InsuranceNewpolicyTransactioninfoComponent">
+	{{#if showInfo}}
+    {{#if tx_Info 'success'}}
+	<p>
+		The transaction was successfull. You can check the transaction here:
+	</p>
+	<p>
+		<a href="https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}" target="_blank">
+			{{tx_Info 'hash'}}
+		</a>
+	</p>
+	<p>
+		Don't forget to click on "Convert to ASCII" ;-)
+	</p>
+	{{/if}}
+    {{#if tx_Info 'error'}}
+	<p>
+		An error has occured:
+		<span>
+			{{tx_Info 'error'}}
+		</span>
+	</p>
+	{{/if}}
+  {{/if}}
+</template>
+

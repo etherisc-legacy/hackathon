@@ -1,0 +1,130 @@
+<template name="Faucet">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Faucet
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> FaucetFaucetHowtoComponent}}{{> FaucetFaucetComp}}{{> FaucetFaucetTransactioninfoComponent}}
+	</div>
+</template>
+
+<template name="FaucetFaucetHowtoComponent">
+	<h4>
+		What's the purpose of this faucet?
+	</h4>
+	<p>
+		To play around with this prototype, a little amount of test-ether comes in handy. 
+    We've build this test ether faucet to provide you with a small amount. 
+    As our resources are limited, please use it on a fair base.
+	</p>
+</template>
+
+<template name="FaucetFaucetComp">
+	{{#if web3_Connected}}
+	<p>
+		Your are connected with account {{account}}
+	</p>
+	<p>
+		with a balance of {{balance}} ETH.
+	</p>
+	{{/if}}
+  {{#unless web3_Connected}}
+	<p>
+		You are not connected to the network. Try installing
+		<a href="https://metamask.io/" target="_blank">
+			MetaMask
+		</a>
+		, the chrome browser extension!
+	</p>
+	{{/unless}}
+  {{#if balance_too_high}}
+	<p>
+		You already own some ether, therefore the faucet is not available for you.
+	</p>
+	{{/if}}
+  {{#if show_faucet}}
+	<p>
+		With this faucet, you can receive test ether and tokens. Please use fair!
+	</p>
+	<div class="faucet_form_insert">
+		{{> FaucetFaucetCompFaucetForm}}
+	</div>
+	{{/if}}
+</template>
+
+<template name="FaucetFaucetCompFaucetForm">
+	<div id="faucet-faucet-comp-faucet-form" class="">
+		<h2 id="component-title">
+			Faucet
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-faucet_amount">
+				<label for="faucet_amount">
+					How much?
+				</label>
+				<div class="input-div">
+					<input type="text" name="faucet_amount" value="1.0" class="form-control " autofocus="autofocus" required="required" data-type="float" data-min="0" data-max="5.0">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Gimme Ether!
+					</button>
+					<a href="#" id="form-cancel-button" class="btn btn-default">
+						Cancel
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="FaucetFaucetTransactioninfoComponent">
+	{{#if showInfo}}
+    {{#if tx_Info 'success'}}
+	<p>
+		The transaction was successfull. You can check the transaction here:
+	</p>
+	<p>
+		<a href="https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}" target="_blank">
+			{{tx_Info 'hash'}}
+		</a>
+	</p>
+	<p>
+		Don't forget to click on "Convert to ASCII" ;-)
+	</p>
+	{{/if}}
+    {{#if tx_Info 'error'}}
+	<p>
+		An error has occured:
+		<span>
+			{{tx_Info 'error'}}
+		</span>
+	</p>
+	{{/if}}
+  {{/if}}
+</template>
+

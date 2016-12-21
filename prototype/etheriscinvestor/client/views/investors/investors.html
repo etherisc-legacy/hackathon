@@ -1,0 +1,145 @@
+<template name="Investors">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Investors
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> InvestorsInvestorsHowtoComponent}}{{> InvestorsTokensaleForm}}{{> InvestorsBalanceofForm}}{{> InvestorsShowTokenbalanceComponent}}{{> InvestorsTokensaleTransactioninfoComponent}}
+	</div>
+</template>
+
+<template name="InvestorsInvestorsHowtoComponent">
+	<h4>
+		Some title
+	</h4>
+	<p>
+		Some text
+	</p>
+</template>
+
+<template name="InvestorsTokensaleForm">
+	<div id="investors-tokensale-form" class="">
+		<h2 id="component-title">
+			Buy Tokens
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-amount">
+				<label for="amount">
+					Amount to buy
+				</label>
+				<div class="input-div">
+					<input type="text" name="amount" value="" class="form-control " autofocus="autofocus" data-type="float">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Buy tokens
+					</button>
+					<a href="#" id="form-cancel-button" class="btn btn-default">
+						Cancel
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="InvestorsBalanceofForm">
+	<div id="investors-balanceof-form" class="">
+		<h2 id="component-title">
+			Query token balance
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-balance_of">
+				<label for="balance_of">
+					Enter address:
+				</label>
+				<div class="input-div">
+					<input type="text" name="balance_of" value="" class="form-control " autofocus="autofocus" data-type="string">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Query
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
+<template name="InvestorsShowTokenbalanceComponent">
+	{{#if balanceOf}}
+	<p>
+		The token balance is {{balanceOf}}.
+	</p>
+	{{/if}}
+</template>
+
+<template name="InvestorsTokensaleTransactioninfoComponent">
+	{{#if showInfo}}
+    {{#if tx_Info 'success'}}
+	<p>
+		The transaction was successfull. You can check the transaction here:
+	</p>
+	<p>
+		<a href="https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}" target="_blank">
+			{{tx_Info 'hash'}}
+		</a>
+	</p>
+	<p>
+		Don't forget to click on "Convert to ASCII" ;-)
+	</p>
+	{{/if}}
+    {{#if tx_Info 'error'}}
+	<p>
+		An error has occured:
+		<span>
+			{{tx_Info 'error'}}
+		</span>
+	</p>
+	{{/if}}
+  {{/if}}
+</template>
+
