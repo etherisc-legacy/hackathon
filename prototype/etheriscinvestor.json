@@ -1,0 +1,573 @@
+{
+	"application": {
+		"title": "Etherisc",
+		"theme": "bootswatch-simplex",
+		"animate": true,
+		"free_zone": {
+			"type": "zone",
+			"components": [
+				{
+					"name": "menu",
+					"type": "menu",
+					"title": "Etherisc",
+					"items": [
+						{
+							"title": "Home",
+							"route": "home"
+						},
+						{
+							"title": "Faucet",
+							"route": "faucet"
+						},
+						{
+							"title": "Simple Insurance",
+							"items": [
+								{
+									"title": "Apply for policy",
+									"route": "insurance"
+								},
+								{
+									"title": "Policy list",
+									"route": "policies_page"
+								}
+							]
+						},
+						{
+							"title": "Investors",
+							"route": "investors"
+						},
+						{
+							"title": "Statistics",
+							"route": "statistics"
+						},
+						{
+							"title": "Management",
+							"route": "management"
+						},
+						{
+							"title": "Oracles",
+							"route": "oracles"
+						}
+					],
+					"object_type": "menu"
+				}
+			],
+			"pages": [
+				{
+					"name": "home",
+					"type": "page",
+					"components": [
+						{
+							"name": "customer_jumbotron",
+							"type": "jumbotron",
+							"button_title": "Yeah, I'll apply for a policy!",
+							"button_route": "insurance",
+							"object_type": "jumbotron"
+						},
+						{
+							"name": "investor_jumbotron",
+							"type": "jumbotron",
+							"button_title": "I'm an investor, where can I invest?",
+							"button_route": "investors",
+							"object_type": "jumbotron"
+						}
+					],
+					"text": "<h2>Etherisc decentralized insurance market</h2>\n\n<p>This is a prototype of a decentralized insurance market to demonstrate the benefits of decentralized insurance applications. \n  It’s part of the etherisc contribution to <a href=\"https://hack.ether.camp/public/a-truly-decentralized-p2p-insurance\">hack.ether.camp</a>. \n  More information can be found on our <a href=\"https://camp.etherisc.com/\">camp site</a> and in our \n  <a href=\"https://docs.google.com/document/d/16HAC-lw3MgHlVzdwUeWBaNOjTqW16GQ1MFWQD8sKMV8\">White Paper.</a></p>\n\n<p>Please choose below what role you want to take in the market:<br>\n<strong>Apply for a policy</strong>, if you want to buy a flight delay insurance; or<br>\n<strong>invest</strong> in the flight delay reinsurance pool to participate in the revenue.</p>"
+				},
+				{
+					"name": "faucet",
+					"type": "page",
+					"title": "Faucet",
+					"components": [
+						{
+							"name": "faucet_howto_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n\t<h4>What is a faucet?</h4>\n\t<p>You need a small amount of testnet ETH to use this prototype. \n      We know this can be a bit complicated, especially if you are new to Ethereum. \n      Just click “Gimme Ether!” below to get some. Our resources are limited, so please use fairly.</p>\n</template>\n\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "faucet_comp",
+							"type": "custom_component",
+							"components": [
+								{
+									"name": "faucet_form",
+									"type": "form",
+									"dest_selector": ".faucet_form_insert",
+									"title": "Faucet",
+									"mode": "insert",
+									"submit_route": "home",
+									"cancel_route": "home",
+									"close_route": "home",
+									"back_route": "home",
+									"submit_code": "Session.set('tx_Type', 'faucet');\n\nMeteor.call(\n  'Faucet', \n  web3.toWei($(\"input[name='faucet_amount']\").val(), 'ether'),\n  web3.eth.accounts[0], \n  method_Callback\n);",
+									"submit_button_title": "Gimme Ether!",
+									"fields": [
+										{
+											"name": "faucet_amount",
+											"title": "How much?",
+											"type": "float",
+											"default": "1.0",
+											"min": "0",
+											"max": "5.0",
+											"required": true,
+											"searchable": false,
+											"sortable": false,
+											"show_in_dataview": false,
+											"show_in_update_form": false,
+											"show_in_read_only_form": false
+										}
+									],
+									"object_type": "form"
+								}
+							],
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if web3_Connected}}\n  <p>Your are connected with account {{account}}</p>\n  <p>with a balance of {{balance}} ETH.</p>\n  {{/if}}\n  {{#unless web3_Connected}}\n  <p>You are not connected to the network. Try installing <a href=\"https://metamask.io/\" target=\"_blank\">MetaMask</a>, the chrome browser extension!</p>\n  {{/unless}}\n  {{#if balance_too_high}}\n  <p>You already own some ether, therefore the faucet is not available for you.</p>\n  {{/if}}\n  {{#if show_faucet}}\n  <p>With this faucet, you can receive test ether and tokens. Please use fair!</p>\n  <div class=\"faucet_form_insert\"></div>\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\tconsole.log('custom_comp rendered');\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n  \n\tweb3_Connected: function() { \n\t\treturn Session.get('web3_Connected'); \n    },\n\n    balance: function() {\n\t\treturn Session.get('balance');\n    }, \n  \n\taccount: function() {\n\t\treturn Session.get('account');\n    },\n  \n\tbalance_too_high: function() {\n\t\treturn Session.get('balance') > 10.0;\n    },\n  \n    show_faucet: function() {\n\t\treturn Session.get('web3_Connected') && Session.get('balance') <= 10.0;\n    }\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "faucet_transactioninfo_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if showInfo}}\n    {{#if tx_Info 'success'}}\n      <p>The transaction was successfull. You can check the transaction here:</p>\n      <p><a href=\"https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}\" target=\"_blank\">{{tx_Info 'hash'}}</a></p>\n      <p>Don't forget to click on \"Convert to ASCII\" ;-)</p>\n    {{/if}}\n    {{#if tx_Info 'error'}}\n      <p>An error has occured: <span>{{tx_Info 'error'}}</span></p>\n    {{/if}}\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\t\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n\ttx_Info: function (elem) {\n      if (typeof Session.get('tx_Info') != 'undefined') {\n\t\treturn Session.get('tx_Info')[elem];\n      }\n    },\n  \n\tshowInfo: function () {\n\t\treturn Session.get('tx_Type') == 'faucet';\n\t}\n  \n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					],
+					"template_rendered_code": "Session.set('faucet_error', false);\nSession.set('faucet_success', false);"
+				},
+				{
+					"name": "insurance",
+					"type": "page",
+					"title": "Insurance",
+					"components": [
+						{
+							"name": "insurance_howto_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n<h2>Insurance</h2>\n<h4>A simple flight delay insurance</h4>\n<p>In order to be able to demonstrate a decentralized insurance market, #\n  we need to show both the consumer and investor side. \n  This simple Flight Delay Insurance is the consumer side. \n  It is a simplified version of our previously released \n  <a href=\"https://fdd.etherisc.com/\">Flight Delay DApp</a>.</p>\n  <p>The form below can be used to apply for a policy for a flight delay insurance. \n  Enter your flight number and departure date and the amount in ETH you want to pay as a premium.</p>\n  <p>Hitting the “Apply!” button calls the function newPolicy() of the simple insurance contract. \n  When the customer applies for a policy, an oracle estimates the probability of the flight being delayed, \n    and underwrites the policy with a call to underwrite(). \n    You can check the status of your policy in the \n    <a href=\"https://dashboard-staging.etherisc.com/policies_page\">policies list</a>.</p>\n<p>In this prototype, the underwriting oracle can be impersonated in the menu \n  <a href=\"https://dashboard-staging.etherisc.com/oracles\">Oracles</a>. \n  Verify the source code of the underlying simple insurance contract on \n  <a href=\"https://etherscan.io/\">etherscan</a> or fork it on \n  <a href=\"https://github.com/\">github</a>.</p>\n\n  {{#if network_warning}}\n  <div class=\"alert alert-warning\">\n  <h4>Warning!</h4>\n  <p>You aren't connected to testnet. This can lead to loss of money!. Please connect to testnet with metamask!</p>\t\t\n\t</div>\n  {{/if}}\n\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\tnetwork_warning: function () {\n      return Session.get('network_warning');\n    }\n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "newpolicy_form",
+							"type": "form",
+							"title": "Apply for Policy",
+							"mode": "insert",
+							"submit_route": "home",
+							"cancel_route": "home",
+							"close_route": "home",
+							"back_route": "home",
+							"submit_code": "Session.set('tx_Type', 'newPolicy');\n\nvar tx = {\n  value: web3.toWei($(\"input[name='premium']\").val(), 'ether')\n};\n\ncontracts.RSC_Insurance.newPolicy(\n  $(\"select[name='risk_description']\").val(), \n  tx, \n  tx_Callback\n);\n",
+							"submit_button_title": "Apply!",
+							"fields": [
+								{
+									"name": "risk_description",
+									"title": "Risk (Flight Number / Origin-Destination / Date)",
+									"type": "string",
+									"required": true,
+									"searchable": false,
+									"sortable": false,
+									"input": "select",
+									"input_items": [
+										{
+											"value": "/LH-410/2016-12-23",
+											"title": "LH 410 MUC-JFK 2016-12-3"
+										},
+										{
+											"value": "/F9-418/2016-12-23",
+											"title": "F9-418 DEN-ATL 2016-12-23"
+										},
+										{
+											"value": "/CA-828/2016-12-23",
+											"title": "CA-828 MUC-PVG 2016-12-23"
+										}
+									],
+									"show_in_dataview": false,
+									"show_in_update_form": false,
+									"show_in_read_only_form": false
+								},
+								{
+									"name": "premium",
+									"title": "Premium",
+									"type": "float",
+									"default": "2.0",
+									"min": "0.5",
+									"max": "50.0",
+									"required": true,
+									"searchable": false,
+									"sortable": false
+								}
+							],
+							"object_type": "form"
+						},
+						{
+							"name": "newpolicy_transactioninfo_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if showInfo}}\n    {{#if tx_Info 'success'}}\n      <p>The transaction was successfull. You can check the transaction here:</p>\n      <p><a href=\"https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}\" target=\"_blank\">{{tx_Info 'hash'}}</a></p>\n      <p>Don't forget to click on \"Convert to ASCII\" ;-)</p>\n    {{/if}}\n    {{#if tx_Info 'error'}}\n      <p>An error has occured: <span>{{tx_Info 'error'}}</span></p>\n    {{/if}}\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n\ttx_Info: function (elem) {\n      if (typeof Session.get('tx_Info') != 'undefined') {\n\t\treturn Session.get('tx_Info')[elem];\n      }\n    },\n  \n\tshowInfo: function () {\n\t\treturn Session.get('tx_Type') == 'newPolicy';\n\t}\n  \n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "policies_page",
+					"type": "page",
+					"components": [
+						{
+							"name": "policies_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n \n  <button id=\"refreshVars\" class=\"btn btn-success\" type=\"submit\">\n    <span class=\"fa fa-check\"></span>\n    Refresh\n  </button>\n \n  <table class=\"table table-striped table-hover \">\n    <thead>\n      <tr>\n        <th>#</th>\n        <th>Customer</th>\n        <th>Premium</th>\n        <th>Flight</th>\n        <th>Prob. %</th>\n        <th>Last change</th>\n        <th>Status</th>\n        <th>Calc. Payout</th>\n        <th>Actual Payout</th>\n      </tr>\n   </thead>\n   <tbody>\n    {{#each policy in policies}}\n      <tr>\n        <td>{{@index}}</td>\n        <td><a href=\"https://testnet.etherscan.io/address/{{policy.[0]}}\" target=\"_blank\">{{policy.[9]}}...</a></td>\n        <td>{{policy.[1]}}</td>\n        <td>{{policy.[2]}}</td>\n        <td>{{policy.[3]}}</td>\n        <td>{{policy.[5]}}</td>\n        <td>{{policy.[6]}}</td>\n        <td>{{policy.[7]}}</td>\n        <td>{{policy.[8]}}</td>\n      </tr>\n    {{/each}}\n   </tbody>\n  </table>\n\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n  \n  policies: function () {\n\treturn Session.get('policies');\n  }\n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n  'click #refreshVars': function () {\n    console.log('Refresh');\n\tMeteor.call('GetPolicies', function (error, result) {\n      Session.set('policies', result);    \n    });\n    \n  }\n  \n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "investors",
+					"type": "page",
+					"title": "Investors",
+					"components": [
+						{
+							"name": "investors_howto_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n\n  <h2>Investors</h2>\n\n  <h4>Provide reinsurance capital</h4>\n\n  <p>This is the investor side of the decentralized insurance market. \n    Investors provide capital for the reinsurance pool by buying tokens. \n    The reinsurance pool covers excessive risks which can not be paid \n    from the regular insurance business. In this prototype the token \n    is called RSC-FDD, the price is fixed with 0.01 ETH / RSC-FDD. \n    You can buy tokens using the form below or by sending ETH from \n    your address to the token contract at 0x00000… You can check the \n    balance of any Ethereum address using the form below or get an overview \n    of the current token holders on <a href=\"https://etherscan.io/\">etherscan</a>. \n    Verify the source code of the underlying token contract on \n    <a href=\"https://etherscan.io/\">etherscan</a> or fork it on \n    <a href=\"https://github.com/\">github</a>.</p>\n  \n  {{#if network_warning}}\n  <div class=\"alert alert-warning\">\n  <h4>Warning!</h4>\n  <p>You aren't connected to testnet. This can lead to loss of money!. Please connect to testnet with metamask!</p>\t\t\n\t</div>\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\tnetwork_warning: function () {\n      return Session.get('network_warning');\n    }\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "tokensale_form",
+							"type": "form",
+							"title": "Buy Tokens",
+							"mode": "insert",
+							"submit_route": "home",
+							"cancel_route": "home",
+							"close_route": "home",
+							"back_route": "home",
+							"submit_code": "Session.set('tx_Type', 'tokenSale');\n\nvar tx = {\n  value: web3.toWei($(\"input[name='amount']\").val(), 'ether')\n};\n\nweb3.version.getNetwork(function (error, result) {\n  if (result == 1) {\n    tx_Callback({message: 'Attention: Your metamask is connected to mainnet. Don\\'t use this prototype on mainnet - it can result in loss of money!'},'');\n  } else if (result != 3) {\n    tx_Callback({message: 'Attention: Your metamask is not connected to testnet. Only use this prototype on testnet - otherwise it can result in loss of money!'},'');\n  } else {\n    contracts.RSC_SimpleSale.tokenSale(tx,tx_Callback);\n  }\n});",
+							"submit_button_title": "Buy tokens",
+							"fields": [
+								{
+									"name": "amount",
+									"title": "Amount to invest (in ETH)",
+									"type": "float"
+								}
+							],
+							"object_type": "form"
+						},
+						{
+							"name": "balanceof_form",
+							"type": "form",
+							"title": "Query token balance",
+							"mode": "insert",
+							"submit_code": "contracts.RSC_Token.balanceOf(\n  $(\"input[name='balance_of']\").val(),\n  function(error, result) {\n    console.log(result);\n    Session.set('balanceOf', result.toNumber());\n  });",
+							"submit_button_title": "Query",
+							"fields": [
+								{
+									"name": "balance_of",
+									"title": "Enter address:",
+									"type": "string"
+								}
+							],
+							"object_type": "form"
+						},
+						{
+							"name": "show_tokenbalance_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if balanceOf}}\n  <p>The token balance is {{balanceOf}}. </p>\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\tbalanceOf: function() {\n      return Session.get('balanceOf');\n    }\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "tokensale_transactioninfo_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if showInfo}}\n    {{#if tx_Info 'success'}}\n      <p>The transaction was successfull. You can check the transaction here:</p>\n      <p><a href=\"https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}\" target=\"_blank\">{{tx_Info 'hash'}}</a></p>\n      <p>Don't forget to click on \"Convert to ASCII\" ;-)</p>\n    {{/if}}\n    {{#if tx_Info 'error'}}\n      <p>An error has occured: <span>{{tx_Info 'error'}}</span></p>\n    {{/if}}\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n\ttx_Info: function (elem) {\n      if (typeof Session.get('tx_Info') != 'undefined') {\n\t\treturn Session.get('tx_Info')[elem];\n      }\n    },\n  \n\tshowInfo: function () {\n\t\treturn Session.get('tx_Type') == 'tokenSale';\n\t}\n  \n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "statistics",
+					"type": "page",
+					"title": "Statistics",
+					"components": [
+						{
+							"name": "statistics_howto_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  <h4>Some title</h4>\n  <p>Some text</p>\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "contracts_details_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  \n  <table class=\"table table-striped table-hover \">\n    <thead>\n      <tr>\n        <th>Parameter</th>\n        <th>Value</th>\n      </tr>\n   </thead>\n   <tbody>\n    {{#each contract_var_id in contract_var_ids}}\n      <tr>\n        <td>{{contract_var_id}}</td>\n        <td>\n          {{#if contract_var_id}}\n          \t{{#if contract_var_ad contract_var_id}}\n          \t\t<a href=\"https://testnet.etherscan.io/address/{{contract_vars contract_var_id}}\" target=\"_blank\">{{contract_vars contract_var_id}}</a>\n          \t{{else}}\n          \t\t{{contract_vars contract_var_id}}\n          \t{{/if}}\n          {{else}}\n          \t&nbsp;\n          {{/if}}\n        </td>\n      </tr>\n    {{/each}}\n   </tbody>\n  </table>\n\n  <button id=\"refreshVars\" class=\"btn btn-success\" type=\"submit\">\n    <span class=\"fa fa-check\"></span>\n    Refresh\n  </button>\n    \n     \n</template>\n",
+							"js": "\nTemplate.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n  \n\tcontract_var_ids: function () {\n      if (typeof Session.get('Contract_var_ids') !== 'undefined') {\n\t\treturn Session.get('Contract_var_ids').map(function(x) {return x.id;});\n      } else {\n        return [];\n      }\n    },\n\n\tcontract_var_ad: function(id) {\n      var cvids = Session.get('Contract_var_ids');\n      return cvids.find(function(x) {return x.id == id; }).ad;\n    },\n  \n    contract_vars: function(id) {\n      return Session.get(id);\n    }\n  \n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n  'click #refreshVars': function () {\n\tMeteor.call('RefreshContracts');\n    getContractVars(); \n    \n  }\n  \n});\n\n\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "management",
+					"type": "page",
+					"title": "Parameter Management",
+					"components": [
+						{
+							"name": "management_howto_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  <h4>Some title</h4>\n  <p>Some text</p>\n  {{#unless ManagerAccess}}\n  <div class=\"alert alert-warning\">\n  <h4>Access denied!</h4>\n  <p>Wrong Access Code.</p>\t\t\n\t</div>\n  {{/unless}}\n\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\tManagerAccess: function () {\n      return Session.get('ManagerAccess');\n    }\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "management_form",
+							"type": "form",
+							"title": "Set parameters (please only one at a time)",
+							"mode": "insert",
+							"submit_code": "Session.set('tx_Type', 'management');\n\nvar accesscode = $(\"input[name='accesscode']\").val();\nconsole.log('Check Access');\n\nMeteor.call('CheckAccessCode', accesscode, function (error, result) {\n \n  console.log(result);\n  \n  if (result) {\n    \n    console.log('Access granted');\n    \n    var token_price_riskmanager = $(\"input[name='token_price_riskmanager']\").val();\n    var total_supply_riskmanager = $(\"input[name='total_supply_riskmanager']\").val();\n\n    var simplesale = $(\"input[name='simplesale']\").val();\n    var insurance = $(\"input[name='insurance']\").val();\n    var riskmanager = $(\"input[name='riskmanager']\").val();\n\n    var fund_insurance = $(\"input[name='fund_insurance']\").val();\n    var fund_simplesale = $(\"input[name='fund_simplesale']\").val();\n\n\tif (token_price_riskmanager !== '') {\n      Meteor.call(\n        'SetTokenPriceRiskManager', \n        accesscode,\n        web3.toWei(token_price_riskmanager, 'ether'),\n        method_Callback\n      );\n    } else if (total_supply_riskmanager !== '') {\n      Meteor.call(\n        'SetTotalSupplyRiskManager', \n        accesscode,\n        total_supply_riskmanager,\n        method_Callback\n      );\n    } else if (insurance !== '') {\n      Meteor.call(\n        'SetupInsurance', \n        accesscode,\n        method_Callback\n      );\n    } else if (simplesale !== '') {\n      Meteor.call(\n        'SetupSimpleSale', \n        accesscode,\n        method_Callback\n      );\n    } else if (riskmanager !== '') {\n      Meteor.call(\n        'SetupRiskManager', \n        accesscode,\n        method_Callback\n      );\n    } else if (fund_insurance !== '') {\n      Meteor.call(\n        'Fund_Insurance', \n        accesscode,\n        web3.toWei(fund_insurance, 'ether'),\n        method_Callback\n      );\n    } else if (fund_simplesale !== '') {\n      Meteor.call(\n        'Fund_SimpleSale', \n        accesscode,\n        web3.toWei(fund_simplesale, 'ether'),\n        method_Callback\n      );\n    }\n\n    Session.set('ManagerAccess', true);\n    \n  } else {\n    Session.set('ManagerAccess', false);\n  }\n\n});\n\n\n",
+							"submit_button_title": "Set Values",
+							"fields": [
+								{
+									"name": "accesscode",
+									"title": "Access Code",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "token_price_riskmanager",
+									"title": "Token Price",
+									"type": "float",
+									"min": "0.0000001",
+									"max": "200.00"
+								},
+								{
+									"name": "total_supply_riskmanager",
+									"title": "Total supply",
+									"type": "integer",
+									"min": "1",
+									"max": "100000000",
+									"searchable": false,
+									"sortable": false
+								},
+								{
+									"name": "insurance",
+									"title": "Setup Insurance",
+									"type": "string"
+								},
+								{
+									"name": "simplesale",
+									"title": "Setup SimpleSale",
+									"type": "string"
+								},
+								{
+									"name": "riskmanager",
+									"title": "Setup RiskManager",
+									"type": "string"
+								},
+								{
+									"name": "fund_insurance",
+									"title": "Fund Transfer SimpleSale -> Insurance",
+									"type": "float"
+								},
+								{
+									"name": "fund_simplesale",
+									"title": "Fund Transfer Insurance -> SimpleSale",
+									"type": "float"
+								}
+							],
+							"object_type": "form"
+						},
+						{
+							"name": "management_transactioninfo_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if showInfo}}\n    {{#if tx_Info 'success'}}\n      <p>The transaction was successfull. You can check the transaction here:</p>\n      <p><a href=\"https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}\" target=\"_blank\">{{tx_Info 'hash'}}</a></p>\n      <p>Don't forget to click on \"Convert to ASCII\" ;-)</p>\n    {{/if}}\n    {{#if tx_Info 'error'}}\n      <p>An error has occured: <span>{{tx_Info 'error'}}</span></p>\n    {{/if}}\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\t\n\ttx_Info: function (elem) {\n      if (typeof Session.get('tx_Info') != 'undefined') {\n\t\treturn Session.get('tx_Info')[elem];\n      }\n    },\n  \n\tshowInfo: function () {\n\t\treturn Session.get('tx_Type') == 'management';\n\t}\n  \n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "oracles",
+					"type": "page",
+					"title": "Oracles",
+					"components": [
+						{
+							"name": "oracles_howto_component",
+							"type": "custom_component",
+							"components": [
+								{
+									"name": "underwrite_oracle_form",
+									"type": "form",
+									"dest_selector": ".underwrite_oracle_div",
+									"title": "Impersonate the Underwriting oracle",
+									"mode": "insert",
+									"submit_code": "Session.set('tx_Type', 'oracle');\n\nvar policyId = $(\"input[name='underwrite_policy_id']\").val();\nvar probability = $(\"input[name='probability']\").val() * 10000;\nvar do_underwrite = $(\"select[name='do_underwrite']\").val();\n\nconsole.log(do_underwrite);\n\nMeteor.call(\n  'UnderwriteInsurance', \n  policyId,\n  probability,\n  do_underwrite,\n  method_Callback\n);",
+									"submit_button_title": "Underwrite",
+									"fields": [
+										{
+											"name": "underwrite_policy_id",
+											"title": "Policy Id",
+											"type": "integer",
+											"required": true
+										},
+										{
+											"name": "probability",
+											"title": "Probability of default (in %)",
+											"type": "float",
+											"default": "0.1",
+											"min": "0.0",
+											"max": "100.0",
+											"required": true
+										},
+										{
+											"name": "do_underwrite",
+											"title": "Action",
+											"type": "bool",
+											"default": "true",
+											"required": true,
+											"input": "select",
+											"input_items": [
+												{
+													"value": "true",
+													"title": "Underwrite"
+												},
+												{
+													"value": "false",
+													"title": "Decline"
+												}
+											]
+										}
+									],
+									"object_type": "form"
+								},
+								{
+									"name": "payout_oracle_form",
+									"type": "form",
+									"dest_selector": ".payout_oracle_div",
+									"title": "Impersonate the Payout oracle",
+									"mode": "insert",
+									"submit_code": "Session.set('tx_Type', 'oracle');\n\nvar policyId = $(\"input[name='payout_policy_id']\").val();\nvar amount = web3.toWei($(\"input[name='amount']\").val(), 'ether');\nvar do_payout = $(\"select[name='do_payout']\").val();\n\nconsole.log(policyId);\n\nMeteor.call(\n  'PayoutInsurance', \n  policyId,\n  amount,\n  do_payout,\n  method_Callback\n);",
+									"submit_button_title": "Payout",
+									"fields": [
+										{
+											"name": "payout_policy_id",
+											"title": "Policy Id",
+											"type": "integer",
+											"required": true
+										},
+										{
+											"name": "amount",
+											"title": "Payout amount",
+											"type": "float",
+											"min": "0.0",
+											"max": "100.0",
+											"required": true
+										},
+										{
+											"name": "do_payout",
+											"title": "Action",
+											"type": "bool",
+											"default": "true",
+											"required": true,
+											"input": "select",
+											"input_items": [
+												{
+													"value": "true",
+													"title": "Payout"
+												},
+												{
+													"value": "false",
+													"title": "Expire"
+												}
+											]
+										}
+									],
+									"object_type": "form"
+								},
+								{
+									"name": "riskmanager_oracle_form",
+									"type": "form",
+									"dest_selector": ".riskmanager_oracle_div",
+									"title": "Impersonate the RiskManager oracle",
+									"mode": "insert",
+									"submit_code": "console.log('submit');",
+									"submit_button_title": "Set parameters",
+									"fields": [
+										{
+											"name": "riskmanager_param_1",
+											"title": "Param 1",
+											"type": "string"
+										},
+										{
+											"name": "riskmanager_param_2",
+											"title": "Param 2",
+											"type": "string"
+										},
+										{
+											"name": "riskmanager_param_3",
+											"title": "Param 3",
+											"type": "string"
+										}
+									],
+									"object_type": "form"
+								}
+							],
+							"html": "<template name=\"TEMPLATE_NAME\">\n  <h2>Oracles</h2>\n  <h4>Play to be an oracle</h4>\n  <p>In our decentralized flight delay insurance acceptance of policy applications \n    (so called underwriting) and payouts are decided by oracles. \n    They are responsible which will eventually run autonomous.\n  </p>\n\n  <p>The <strong>Underwriting oracle</strong> checks an applied policy and accepts or declines it. \n    If the oracle accepts the policy, it also calculates a probability of default - \n    the probability that the policy will be claimed in the course of a year.\n  </p>\n  <div class=\"underwrite_oracle_div\"></div>\n  <p>The <strong>Payout oracle</strong> decides if a claim is paid out.</p>\n  <div class=\"payout_oracle_div\"></div>\n  <p>The <strong>RiskManager oracle</strong> provides the RiskManager with statistical and economical input.\n  It collects the active policies, calculates the risk volume and determines the amount of risk capital needed.\n  If there is to little capital, the RiskManager triggers the sale of new tokens.</p>\n  <div class=\"riskmanager_oracle_div\" style=\"display: none\"></div>\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						},
+						{
+							"name": "oracle_transactioninfo_component",
+							"type": "custom_component",
+							"html": "<template name=\"TEMPLATE_NAME\">\n  {{#if showInfo}}\n    {{#if tx_Info 'success'}}\n      <p>The transaction was successfull. You can check the transaction here:</p>\n      <p><a href=\"https://testnet.etherscan.io/tx/{{tx_Info 'hash'}}\" target=\"_blank\">{{tx_Info 'hash'}}</a></p>\n      <p>Don't forget to click on \"Convert to ASCII\" ;-)</p>\n    {{/if}}\n    {{#if tx_Info 'error'}}\n      <p>An error has occured: <span>{{tx_Info 'error'}}</span></p>\n    {{/if}}\n  {{/if}}\n</template>\n",
+							"js": "Template.TEMPLATE_NAME.created = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.destroyed = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.rendered = function() {\n\n};\n\nTemplate.TEMPLATE_NAME.helpers({\n\n\ttx_Info: function (elem) {\n      if (typeof Session.get('tx_Info') != 'undefined') {\n\t\treturn Session.get('tx_Info')[elem];\n      }\n    },\n  \n\tshowInfo: function () {\n\t\treturn Session.get('tx_Type') == 'oracle';\n\t}\n\n});\n\nTemplate.TEMPLATE_NAME.events({\n\n});\n",
+							"jsx": "export const TEMPLATE_NAME = React.createClass({\n\trender() {\n\t\treturn (\n\t\t);\n\t}\n});\n",
+							"object_type": "custom_component"
+						}
+					]
+				}
+			]
+		},
+		"server_startup_code": "Meteor.startup(function() {\n        // read environment variables from Meteor.settings\n        if(Meteor.settings && Meteor.settings.env && _.isObject(Meteor.settings.env)) {\n                for(var variableName in Meteor.settings.env) {\n                        process.env[variableName] = Meteor.settings.env[variableName];\n                }\n        }\n\n\ncontract_ids = require('../both/lib/contract_ids.js');\nabi_bin = require('../both/lib/abi_bin.js');\nnetworks = require('../both/lib/networks.js');\n\nnetwork = 'ropsten';\n\nvar Web3 = require('web3');\n\nvar passwd = require('./passwd.js');\n\nvar coinbase = networks[network].ownerAddress;\n\nweb3 = new Web3(new Web3.providers.HttpProvider(\"http://localhost:8645\"));\n\nvar RSC_AddressResolver = web3.eth.contract(abi_bin.abi.RSC_AddressResolver)\n                        .at(networks.ropsten.AddressResolver_addr);\n\nvar server_contracts = {};\n\nvar getContract = function(contract) {\n        server_contracts[contract] =\n      web3.eth.contract(abi_bin.abi[contract])\n                .at(RSC_AddressResolver.getAddress(web3.sha3(contract)));\n};\n\nvar getAllContracts = function () {\n  for (var contract in contract_ids.contracts) {\n    getContract(contract);\n  }\n};\n\ngetAllContracts();\n\nconsole.log('Server started');\nconsole.log(web3.eth.blockNumber);\n\nvar checkAccessCode = function (accesscode) {\n    return web3.sha3(accesscode) ==\n      \"0x07ce869f99772640df804174316d4ee89e1eceddcff6862b24dcb8baad644373\";\n};\n\nMeteor.methods({\n\n  RefreshContracts : function() {\n\n    console.log('Method Call: RefreshContracts');\n    getAllContracts();\n\n  },\n\n  Faucet: function(amount, address) {\n\n    console.log('Method Call: faucet');\n    console.log(amount);\n    console.log(address);\n\n    if (amount > 2*Math.pow(10,18)) {\n      return({success: false, error: 'Error: Don\\'t cheat!'});\n    }\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase,\n      to: address,\n      value: amount,\n      data: web3.fromUtf8('From etherisc with love!')\n    };\n\n    var sendTx = Meteor.wrapAsync(web3.eth.sendTransaction);\n    return ({success: true, txHash: sendTx(transaction)});\n\n  },\n\n  SetTokenPriceRiskManager: function(accesscode, amount) {\n\n    console.log('Method Call: SetTokenPriceRiskManager');\n    console.log(amount);\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var setPrice = Meteor.wrapAsync(server_contracts.RSC_RiskManager.setPrice);\n    return ({success: true, txHash: setPrice(amount, transaction)});\n\n  },\n\n  SetTotalSupplyRiskManager: function(accesscode, amount) {\n\n    console.log('Method Call: SetTotalSupplyRiskManager');\n    console.log(amount);\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var setNewTotalSupply = Meteor.wrapAsync(server_contracts.RSC_RiskManager.setNewTotalSupply);\n    return ({success: true, txHash: setNewTotalSupply(amount, transaction)});\n\n  },\n\n  SetTokenContractSimpleSale: function(accesscode, address) {\n\n    console.log('Method Call: SetTokenContractSimpleSale');\n    console.log(address);\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var setTokenContract = Meteor.wrapAsync(server_contracts.RSC_SimpleSale.setTokenContract);\n    return ({success: true, txHash: setTokenContract(address, transaction)});\n\n  },\n\n  SetTokenOwnerToken: function(accesscode, address) {\n\n    console.log('Method Call: SetTokenOwnerToken');\n    console.log(address);\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var setOwner = Meteor.wrapAsync(server_contracts.RSC_Token.setOwner);\n    return ({success: true, txHash: setOwner(address, transaction)});\n\n  },\n\n  UnderwriteInsurance: function(policyId, probability, underwriting_action) {\n\n    console.log('Method Call: UnderwriteInsurance');\n    console.log(policyId);\n    console.log(probability);\n    console.log(underwriting_action);\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var underwrite = Meteor.wrapAsync(server_contracts.RSC_Insurance.underwrite);\n    return ({success: true, txHash: underwrite(policyId, probability, underwriting_action, transaction)});\n\n  },\n\n  PayoutInsurance: function(policyId, amount, payout_action) {\n\n    console.log('Method Call: PayoutInsurance');\n    console.log(policyId);\n    console.log(amount);\n    console.log(payout_action);\n    if(!payout_action) {\n      amount = 0;\n    }\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase,\n      gas: 500000\n    };\n\n    var payOut = Meteor.wrapAsync(server_contracts.RSC_Insurance.payOut);\n    return ({success: true, txHash: payOut(policyId, amount, '', transaction)});\n\n  },\n\n  SetupInsurance: function(accesscode) {\n\n    console.log('Method Call: SetupInsurance');\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n        var address_riskmanager = server_contracts.RSC_RiskManager.address;\n        var address_simplesale = server_contracts.RSC_SimpleSale.address;\n\n    var setup = Meteor.wrapAsync(server_contracts.RSC_Insurance.setup);\n    return ({success: true, txHash: setup(address_riskmanager, address_simplesale, transaction)});\n\n  },\n\n  SetupSimpleSale: function(accesscode) {\n\n    console.log('Method Call: SetupSimpleSale');\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n        var address_riskmanager = server_contracts.RSC_RiskManager.address;\n        var address_insurance = server_contracts.RSC_Insurance.address;\n\n    var setup = Meteor.wrapAsync(server_contracts.RSC_SimpleSale.setup);\n    return ({success: true, txHash: setup(address_riskmanager, address_insurance, transaction)});\n\n  },\n\n  SetupRiskManager: function(accesscode) {\n\n    console.log('Method Call: SetupRiskManager');\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n        var address_simpleSale = server_contracts.RSC_SimpleSale.address;\n        var address_insurance = server_contracts.RSC_Insurance.address;\n\n    var setContracts = Meteor.wrapAsync(server_contracts.RSC_RiskManager.setContracts);\n    return ({success: true, txHash: setContracts(address_insurance, address_simpleSale, transaction)});\n\n  },\n\n  FundInsurance: function(accesscode, amount) {\n\n    console.log('Method Call: FundInsurance');\n    console.log(address);\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var send_Funds = Meteor.wrapAsync(server_contracts.RSC_SimpleSale.send_Funds);\n    return ({success: true, txHash: send_Funds(amount, transaction)});\n\n  },\n\n  FundSimpleSale: function(accesscode, amount) {\n\n    console.log('Method Call: FundSimpleSale');\n    console.log(address);\n\n    if (!checkAccessCode(accesscode)) return ({success: false, txHash: ''});\n\n    var password = passwd[coinbase];\n    web3.personal.unlockAccount(coinbase, password);\n\n    var transaction = {\n      from: coinbase\n    };\n\n    var send_Funds = Meteor.wrapAsync(server_contracts.RSC_Insurance.send_Funds);\n    return ({success: true, txHash: send_Funds(amount, transaction)});\n\n  },\n\n  GetPolicies: function() {\n\n    console.log('Method Call: GetPolicies');\n\n    var policyCount = server_contracts.RSC_Insurance.getPolicyCount();\n    var policies = [];\n    for (var index = 0; index < policyCount; index++) {\n\n      var row = server_contracts.RSC_Insurance.policies(index);\n\n      row.push(row[0].slice(0,7));\n      row[1] = web3.fromWei(row[1], 'ether').toFixed(4);\n      row[3] = web3.toDecimal(row[3]) / 10000;\n      row[5] = new Date(web3.toDecimal(row[5]) * 1000).toUTCString();\n      row[7] = web3.fromWei(row[7], 'ether').toFixed(4);\n      row[8] = web3.fromWei(row[8], 'ether').toFixed(4);\n\n      policies.push(row);\n\n    }\n    return policies;\n  },\n\n  CheckAccessCode: checkAccessCode\n\n});\n\n\n});\n",
+		"client_startup_code": "Meteor.startup(function() {\n\nconsole.log('client startup');\n\ncontract_ids = require('../both/lib/contract_ids.js');\nabi_bin = require('../both/lib/abi_bin.js');\nnetworks = require('../both/lib/networks.js');\n\nSession.set('web3_Connected', false);\n\ncontracts = {};\n\n\nMeteor.setInterval(\n  function() {\n      web3_Connect();\n  },\n  5 * 1000   // interval in milliseconds\n);\n\nconsole.log('client startup finished');\n\n/*\ncontract_addresses = {\n  RSC_AddressResolver: \"0xc3463b1aaa94ee0332d480860231c04a52cf108d\",\n  RSC_Token: \"0x0a940982c3977c7ac36f65959106b6f6ee6c4baa\",\n  RSC_SimpleSale: \"0x98f7d3f60b5364262b5c6795bc890c9106ecd2fc\",\n  RSC_Insurance: \"0xda823b440a942f9601ff003df5b4f3e49e5e9d24\",\n  RSC_RiskManager: \"0x648b6c54e733c27d4ab47fc6714202a0b3288837\"\n};\n*/\n\n\nvar getContract = function(contract) {\n    web3.eth.contract(abi_bin.abi.RSC_AddressResolver)\n                        .at(networks.ropsten.AddressResolver_addr).getAddress(\n      web3.sha3(contract),\n      function (error, result) {\n                contracts[contract] = web3.eth.contract(abi_bin.abi[contract]).at(result);\n      }\n    );\n};\n\n/*\nvar getContract = function(contract) {\n  contracts[contract] = web3.eth.contract(abi_bin.abi[contract])\n        .at(contract_addresses[contract]);\n};\n*/\n\nvar getAllContracts = function () {\n  for (var contract in contract_ids.contracts) {\n    //console.log('Getting ' + contract);\n    getContract(contract);\n  }\n};\n\ntx_Callback = function(error, result) {\n        console.log('tx_Callback');\n    if (error) {\n      Session.set(\n        'tx_Info', {\n          success: false,\n          error: error.message.slice(0, error.message.indexOf('\\n')),\n          hash: ''\n        });\n    } else {\n      Session.set(\n        'tx_Info', {\n          success: true,\n          error: '',\n          hash: result\n        });\n    }\n\n};\n\nmethod_Callback = function(error, result) {\n    if (error) {\n      Session.set(\n        'tx_Info', {\n          success: false,\n          error: error.message.slice(0, error.message.indexOf('\\n')),\n          hash: ''\n        });\n    } else if (result.success) {\n      Session.set(\n        'tx_Info', {\n          success: true,\n          error: '',\n          hash: result.txHash\n        });\n    } else {\n      Session.set(\n        'tx_Info', {\n          success: false,\n          error: result.error,\n          hash: ''\n        });\n    }\n};\n\n\nvar web3_Connect = function() {\n\n        if (typeof web3 !== 'undefined') {\n                web3 = new Web3(web3.currentProvider);\n        web3.version.getNetwork(function (error, result) {\n          if (result != 3) {\n            web3 = {};\n            Session.set('network_warning', true);\n          } else {\n            Session.set('network_warning', false);\n          }\n        });\n                web3.eth.getBalance(\n          web3.eth.accounts[0],\n          function (error, result) {\n            Session.set('web3_Connected', true);\n            Session.set('balance', web3.fromWei(result).toFixed(2));\n            Session.set('account', web3.eth.accounts[0]);\n                        getAllContracts();\n          });\n    }\n};\n\nweb3_Connect();\n\ngetContractVars = function () { // global callable, by clicking \"refresh\"\n\n  var Contract_var_ids = [\n\n    {id: 'RSC_Token_owner', ad: true},\n    {id: 'RSC_Token_totalSupply', ad: false},\n    {id: '', ad: false},\n    {id: 'RSC_Insurance_owner', ad: true},\n    {id: 'RSC_Insurance_oracle', ad: true},\n    {id: 'RSC_Insurance_riskManager', ad: true},\n    {id: 'RSC_Insurance_funder', ad: true},\n    {id: 'RSC_Insurance_extBalance', ad: false},\n    {id: 'RSC_Insurance_intBalance', ad: false},\n    {id: '', ad: false},\n    {id: 'RSC_SimpleSale_owner', ad: true},\n    {id: 'RSC_SimpleSale_riskManager', ad: true},\n    {id: 'RSC_SimpleSale_funder', ad: true},\n    {id: 'RSC_SimpleSale_balance', ad: false},\n    {id: 'RSC_SimpleSale_RSC_Token_Contract', ad: true},\n    {id: 'RSC_SimpleSale_tokenPrice', ad: false},\n    {id: 'RSC_SimpleSale_totalRaised', ad: false},\n    {id: 'RSC_SimpleSale_FUNDING_GOAL', ad: false},\n    {id: 'RSC_SimpleSale_STARTBLOCK', ad: false},\n    {id: 'RSC_SimpleSale_MAXIMUM_SALE_BLOCK', ad: false},\n    {id: 'RSC_SimpleSale_saleFinished', ad: false},\n    {id: '', ad: false},\n    //{id: 'RSC_RiskManager_insurance', ad: true},\n    //{id: 'RSC_RiskManager_simpleSale', ad: true},\n    {id: '', ad: false}\n  ];\n\n  for (var contract in contract_ids.contracts) {\n    Contract_var_ids.push({id: contract + '_Address', ad: true});\n    Session.set(contract + '_Address',contracts[contract].address);\n  }\n\n  Session.set('Contract_var_ids', Contract_var_ids);\n\n  var policies = [];\n  var policyCount = 0;\n  var getPolicy = function(index, cb) {\n    if (index >= policyCount) {\n      Session.set('RSC_Insurance_policies', policies);\n      return;\n    }\n    contracts.RSC_Insurance.policies(index, function (error, result) {\n      policies.push(JSON.stringify(result));\n      cb(index+1, getPolicy);\n    });\n  };\n\n\n  contracts.RSC_Token.totalSupply(function (error, result) {\n    Session.set('RSC_Token_totalSupply', result.toNumber());});\n\n  contracts.RSC_Token.owner(function (error, result) {\n    Session.set('RSC_Token_owner', result);});\n\n  contracts.RSC_Insurance.owner(function (error, result) {\n    Session.set('RSC_Insurance_owner', result);});\n\n  contracts.RSC_Insurance.oracle(function (error, result) {\n    Session.set('RSC_Insurance_oracle', result);});\n\n  contracts.RSC_Insurance.riskManager(function (error, result) {\n    Session.set('RSC_Insurance_riskManager', result);});\n\n  contracts.RSC_Insurance.funder(function (error, result) {\n    Session.set('RSC_Insurance_funder', result);});\n\n  web3.eth.getBalance(contracts.RSC_Insurance.address, function (error, result) {\n    Session.set('RSC_Insurance_extBalance', web3.fromWei(result, 'ether').toFixed(4) + ' ETH');});\n\n  contracts.RSC_Insurance.balance(function (error, result) {\n    Session.set('RSC_Insurance_intBalance', web3.fromWei(result, 'ether').toFixed(4) + ' ETH');});\n\n  contracts.RSC_Insurance.getPolicyCount(\n    '',\n    function(error,result) {\n      policyCount = result.toNumber();\n      getPolicy(0, getPolicy);\n    });\n\n  contracts.RSC_SimpleSale.owner(function (error, result) {\n    Session.set('RSC_SimpleSale_owner', result);});\n\n  contracts.RSC_SimpleSale.riskManager(function (error, result) {\n    Session.set('RSC_SimpleSale_riskManager', result);});\n\n  contracts.RSC_SimpleSale.funder(function (error, result) {\n    Session.set('RSC_SimpleSale_funder', result);});\n\n  web3.eth.getBalance(contracts.RSC_SimpleSale.address, function (error, result) {\n    Session.set('RSC_SimpleSale_balance', web3.fromWei(result, 'ether').toFixed(4) + ' ETH');});\n\n  contracts.RSC_SimpleSale.FUNDING_GOAL(function (error, result) {\n    Session.set('RSC_SimpleSale_FUNDING_GOAL', web3.fromWei(result, 'ether').toFixed(4) + ' ETH');});\n\n  contracts.RSC_SimpleSale.MAXIMUM_SALE_BLOCK(function (error, result) {\n    Session.set('RSC_SimpleSale_MAXIMUM_SALE_BLOCK', result.toFixed(0));});\n\n  contracts.RSC_SimpleSale.RSC_Token_Contract(function (error, result) {\n    Session.set('RSC_SimpleSale_RSC_Token_Contract', result);});\n\n  contracts.RSC_SimpleSale.STARTBLOCK(function (error, result) {\n    Session.set('RSC_SimpleSale_STARTBLOCK', result.toFixed(0));});\n\n  contracts.RSC_SimpleSale.TOTAL_TOKENS(function (error, result) {\n    Session.set('RSC_SimpleSale_TOTAL_TOKENS', result.toFixed(0));});\n\n  contracts.RSC_SimpleSale.saleFinished(function (error, result) {\n    Session.set('RSC_SimpleSale_saleFinished', result.toString());});\n\n  contracts.RSC_SimpleSale.tokenPrice(function (error, result) {\n    Session.set('RSC_SimpleSale_tokenPrice', web3.fromWei(result, 'ether').toFixed(4) + ' ETH');});\n\n  contracts.RSC_SimpleSale.totalRaised(function (error, result) {\n    Session.set('RSC_SimpleSale_totalRaised', web3.fromWei(result, 'ether').toFixed(4) + ' ETH');});\n  /*\n  contracts.RSC_RiskManager.insurance(function (error, result) {\n    Session.set('RSC_RiskManager_insurance', result);});\n\n  contracts.RSC_RiskManager.simpleSale(function (error, result) {\n    Session.set('RSC_RiskManager_simpleSale', result);});\n  */\n};\n});",
+		"copy_files": [
+			{
+				"source": "../opt/sandbox/hack.ether.camp/contracts/lib/globals.js",
+				"dest": "BOTH_LIB_DIR/globals.js"
+			},
+			{
+				"source": "../opt/sandbox/hack.ether.camp/contracts/lib/abi.js",
+				"dest": "BOTH_LIB_DIR/abi_bin.js"
+			},
+			{
+				"source": "../opt/sandbox/hack.ether.camp/contracts/lib/networks.js",
+				"dest": "BOTH_LIB_DIR/networks.js"
+			},
+			{
+				"source": "../opt/sandbox/hack.ether.camp/contracts/lib/contract_ids.js",
+				"dest": "BOTH_LIB_DIR/contract_ids.js"
+			}
+		],
+		"packages": {
+			"meteor": [
+				"session"
+			],
+			"npm": [
+				"web3"
+			]
+		}
+	}
+}
